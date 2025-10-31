@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#2563eb" />
+    <link rel="apple-touch-icon" href="icons/icon-192.png" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="styles.css" />
+    <title>EduGincana · Creador de gimcanes didàctiques</title>
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <h1>Edu<span>Gincana</span></h1>
+        <p class="subtitle" data-i18n="app.subtitle">
+          Dissenya i juga gimcanes didàctiques amb reptes encadenats i recompenses finals.
+        </p>
+        <div class="hero-tags">
+          <span class="hero-tag" data-i18n="app.hero.gamification">Gamificació</span>
+          <span class="hero-tag" data-i18n="app.hero.activeLearning">Aprenentatge actiu</span>
+          <span class="hero-tag" data-i18n="app.hero.teamwork">Treball en equip</span>
+        </div>
+      </div>
+      <div class="topbar-controls">
+        <nav class="mode-switch" aria-label="Canviar de mode" data-i18n-aria-label="mode.switch">
+          <button type="button" data-target="creator" class="active" data-i18n="mode.creator">
+            Mode creador
+          </button>
+          <button type="button" data-target="player" data-i18n="mode.player">Mode joc</button>
+        </nav>
+        <div class="language-switch">
+          <label class="sr-only" for="language-selector" data-i18n="language.label">Idioma</label>
+          <select id="language-selector">
+            <option value="ca" data-i18n="language.option.ca">Valencià</option>
+            <option value="es" data-i18n="language.option.es">Español</option>
+            <option value="en" data-i18n="language.option.en">English</option>
+          </select>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section id="creator" class="panel active" aria-labelledby="creator-heading">
+        <div class="panel-header">
+          <h2 id="creator-heading" data-i18n="creator.heading">Dissenya la teua gimcana</h2>
+          <div class="actions">
+            <label class="sr-only" for="project-selector" data-i18n="creator.project.selector.label">
+              Selecciona una gimcana guardada
+            </label>
+            <select id="project-selector"></select>
+            <button type="button" id="new-project" data-i18n="creator.actions.new">
+              Nova gimcana
+            </button>
+          </div>
+        </div>
+
+        <form id="project-form" autocomplete="off">
+          <div class="card">
+            <h3 data-i18n="creator.info.title">Informació general</h3>
+            <div class="field-grid">
+              <label>
+                <span data-i18n="creator.info.field.title.label">Títol</span>
+                <input
+                  type="text"
+                  id="project-title"
+                  data-i18n-placeholder="creator.info.field.title.placeholder"
+                  placeholder="Ex. Gimcana de ciències"
+                  required
+                />
+              </label>
+              <label>
+                <span data-i18n="creator.info.field.author.label">Autoria o equip</span>
+                <input
+                  type="text"
+                  id="project-author"
+                  data-i18n-placeholder="creator.info.field.author.placeholder"
+                  placeholder="El teu nom o el grup"
+                />
+              </label>
+            </div>
+            <label>
+              <span data-i18n="creator.info.field.story.label">Introducció o història</span>
+              <textarea
+                id="project-story"
+                data-i18n-placeholder="creator.info.field.story.placeholder"
+                rows="3"
+                placeholder="Context inicial per motivar a l'alumnat..."
+              ></textarea>
+            </label>
+            <label>
+              <span data-i18n="creator.info.field.reward.label">Missatge final / premi</span>
+              <textarea
+                id="project-reward"
+                data-i18n-placeholder="creator.info.field.reward.placeholder"
+                rows="2"
+                placeholder="Missatge o instruccions per lliurar la recompensa final."
+                required
+              ></textarea>
+            </label>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3 data-i18n="creator.challenges.title">Reptes</h3>
+              <div class="button-stack">
+                <button type="button" id="export-project" data-i18n="creator.challenges.exportJson">
+                  Exporta JSON
+                </button>
+                <button type="button" id="export-html" data-i18n="creator.challenges.exportHtml">
+                  Exporta HTML
+                </button>
+                <button type="button" id="duplicate-project" data-i18n="creator.challenges.duplicate">
+                  Duplica
+                </button>
+              </div>
+            </div>
+            <p class="hint" data-i18n="creator.challenges.hint">
+              Ordena els reptes segons la seqüència desitjada. Cada resposta correcta desbloqueja el següent.
+            </p>
+            <ol id="challenge-list" class="challenge-list"></ol>
+
+            <fieldset class="new-challenge">
+              <legend data-i18n="creator.challenges.new.legend">Afegeix nou repte</legend>
+              <label>
+                <span data-i18n="creator.challenges.new.title.label">Títol del repte</span>
+                <input
+                  type="text"
+                  id="new-ch-title"
+                  data-i18n-placeholder="creator.challenges.new.title.placeholder"
+                  placeholder="Ex. Repte de pistes"
+                />
+              </label>
+              <label>
+                <span data-i18n="creator.challenges.new.description.label">Descripció o pista</span>
+                <textarea
+                  id="new-ch-description"
+                  rows="2"
+                  data-i18n-placeholder="creator.challenges.new.description.placeholder"
+                  placeholder="Text que orienta per resoldre el repte..."
+                ></textarea>
+              </label>
+              <label>
+                <span data-i18n="creator.challenges.new.answer.label">Resposta correcta</span>
+                <input
+                  type="text"
+                  id="new-ch-answer"
+                  data-i18n-placeholder="creator.challenges.new.answer.placeholder"
+                  placeholder="Codi, paraula clau, etc."
+                />
+              </label>
+              <label>
+                <span data-i18n="creator.challenges.new.success.label">
+                  Missatge en superar el repte (opcional)
+                </span>
+                <input
+                  type="text"
+                  id="new-ch-success"
+                  data-i18n-placeholder="creator.challenges.new.success.placeholder"
+                  placeholder="Enhorabona! Has trobat..."
+                />
+              </label>
+              <label>
+                <span data-i18n="creator.challenges.new.hint.label">Pista (opcional)</span>
+                <textarea
+                  id="new-ch-hint"
+                  rows="2"
+                  data-i18n-placeholder="creator.challenges.new.hint.placeholder"
+                  placeholder="Ajuda breu que es mostrarà en demanar-la."
+                ></textarea>
+              </label>
+              <button type="button" id="add-challenge" data-i18n="creator.challenges.new.button">
+                Afegeix repte
+              </button>
+            </fieldset>
+          </div>
+        </form>
+
+        <section class="card">
+          <h3 data-i18n="creator.import.title">Importa gimcana</h3>
+          <p data-i18n="creator.import.description">
+            Si una altra persona et comparteix un JSON, enganxa'l ací per afegir-lo a la teua col·lecció.
+          </p>
+          <textarea
+            id="import-area"
+            rows="4"
+            data-i18n-placeholder="creator.import.placeholder"
+            placeholder='{"id":"...","title":"..."}'
+          ></textarea>
+          <button type="button" id="import-project" data-i18n="creator.import.button">Importa</button>
+        </section>
+      </section>
+
+      <section id="player" class="panel" aria-labelledby="player-heading">
+        <div class="panel-header">
+          <h2 id="player-heading" data-i18n="player.heading">Juga una gimcana</h2>
+        </div>
+
+        <div class="card">
+          <label class="dropdown-label" for="player-project-selector">
+            <span data-i18n="player.select.label">Selecciona una gimcana disponible</span>
+            <select id="player-project-selector"></select>
+          </label>
+          <div class="player-actions">
+            <button type="button" id="start-run" data-i18n="player.actions.start">
+              Comença / continua
+            </button>
+            <button type="button" id="reset-progress" data-i18n="player.actions.reset">
+              Reinicia el progrés
+            </button>
+          </div>
+        </div>
+
+        <article id="player-view" class="card hidden" aria-live="polite">
+          <header>
+            <h3 id="player-title"></h3>
+            <p id="player-meta"></p>
+          </header>
+          <p id="player-story" class="intro-text"></p>
+
+          <section id="challenge-view" class="challenge-view hidden">
+            <h4 id="challenge-title"></h4>
+            <p id="challenge-description"></p>
+            <form id="challenge-form" autocomplete="off">
+              <label class="sr-only" for="challenge-answer" data-i18n="player.challenge.answer.label">
+                Resposta
+              </label>
+              <input
+                type="text"
+                id="challenge-answer"
+                data-i18n-placeholder="player.challenge.answer.placeholder"
+                placeholder="Escriu ací la resposta"
+                required
+                autocomplete="one-time-code"
+              />
+              <button type="submit" data-i18n="player.challenge.submit">Valida la resposta</button>
+            </form>
+            <div class="challenge-actions">
+              <button
+                type="button"
+                id="challenge-hint-button"
+                class="secondary"
+                data-i18n="player.challenge.hintButton"
+              >
+                Demana pista
+              </button>
+              <p id="challenge-hint-text" class="hint-text" role="status"></p>
+            </div>
+            <p id="challenge-feedback" role="status"></p>
+          </section>
+
+          <section id="reward-view" class="reward-view hidden">
+            <h4 data-i18n="player.reward.title">Repte final completat!</h4>
+            <p id="reward-message"></p>
+          </section>
+        </article>
+      </section>
+    </main>
+
+    <template id="challenge-template">
+      <li class="challenge-item">
+        <details open>
+          <summary>
+            <span class="challenge-name"></span>
+            <div class="challenge-controls">
+              <button type="button" data-action="move-up" title="Subir">▲</button>
+              <button type="button" data-action="move-down" title="Bajar">▼</button>
+              <button type="button" data-action="delete" title="Eliminar">✕</button>
+            </div>
+          </summary>
+          <div class="challenge-body">
+            <label>
+              <span data-i18n="creator.info.field.title.label">Títol</span>
+              <input type="text" data-field="title" />
+            </label>
+            <label>
+              <span data-i18n="creator.challenges.new.description.label">Descripció o pista</span>
+              <textarea data-field="description" rows="2"></textarea>
+            </label>
+            <label>
+              <span data-i18n="creator.challenges.new.answer.label">Resposta correcta</span>
+              <input type="text" data-field="answer" />
+            </label>
+            <label>
+              <span data-i18n="creator.challenges.new.success.label">
+                Missatge en superar el repte (opcional)
+              </span>
+              <input
+                type="text"
+                data-field="successMessage"
+                data-i18n-placeholder="creator.challenges.new.success.placeholder"
+                placeholder="Enhorabona! Has trobat..."
+              />
+            </label>
+            <label>
+              <span data-i18n="creator.challenges.new.hint.label">Pista (opcional)</span>
+              <textarea
+                data-field="hint"
+                rows="2"
+                data-i18n-placeholder="creator.challenges.new.hint.placeholder"
+                placeholder="Ajuda breu que es mostrarà en demanar-la."
+              ></textarea>
+            </label>
+          </div>
+        </details>
+      </li>
+    </template>
+
+    <div class="toast hidden" role="status" aria-live="polite"></div>
+
+    <script src="app.js" type="module"></script>
+  </body>
+</html>
