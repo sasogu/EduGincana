@@ -54,6 +54,7 @@ const translations = {
       "Si una altra persona et comparteix un JSON, enganxa'l ací per afegir-lo a la teua col·lecció.",
     "creator.import.placeholder": '{"id":"...","title":"..."}',
     "creator.import.button": "Importa",
+    "editor.markdownHint": "Pots emprar Markdown (negreta, llistes, enllaços...).",
     "creator.challenge.summary": "Repte {{index}}. {{title}}",
     "creator.challenge.untitled": "Repte sense títol",
     "creator.project.defaultTitle": "Nova gimcana",
@@ -150,6 +151,7 @@ const translations = {
       "Si otra persona te comparte un JSON, pégalo aquí para añadirlo a tu colección.",
     "creator.import.placeholder": '{"id":"...","title":"..."}',
     "creator.import.button": "Importar",
+    "editor.markdownHint": "Puedes usar Markdown (negritas, listas, enlaces...).",
     "creator.challenge.summary": "Reto {{index}}. {{title}}",
     "creator.challenge.untitled": "Reto sin título",
     "creator.project.defaultTitle": "Nueva gincana",
@@ -247,6 +249,7 @@ const translations = {
       "If someone shares a JSON with you, paste it here to add it to your local collection.",
     "creator.import.placeholder": '{"id":"...","title":"..."}',
     "creator.import.button": "Import",
+    "editor.markdownHint": "You can use Markdown (bold, lists, links...).",
     "creator.challenge.summary": "Challenge {{index}}. {{title}}",
     "creator.challenge.untitled": "Untitled challenge",
     "creator.project.defaultTitle": "New scavenger hunt",
@@ -661,7 +664,7 @@ function bindPlayerEvents() {
         showFeedback(t("player.feedback.noHint"), true);
         return;
       }
-      elements.challengeHintText.textContent = hint;
+      renderMarkdown(elements.challengeHintText, hint);
       elements.challengeHintButton.disabled = true;
     });
   }
@@ -703,1008 +706,7 @@ function bindPlayerEvents() {
 }
 
 function bindAutofocus() {
-  const observer = new MutationObserver(() => {
-    if (!elements.challengeView.classList.contains("hidden")) {
-      elements.challengeAnswer.focus();
-    }
-  });
-  observer.observe(elements.challengeView, { attributes: true, attributeFilter: ["class"] });
-}
-
-function ensureActiveProject() {
-  if (!projects.length) {
-    const project = createEmptyProject();
-    projects.push(project);
-    activeProjectId = project.id;
-    persistProjects();
-  } else if (!activeProjectId) {
-    activeProjectId = projects[0].id;
-  }
-}
-
-function renderSelectors() {
-  if (elements.projectSelector) {
-    const previous = elements.projectSelector.value;
-    elements.projectSelector.innerHTML = "";
-    projects.forEach((project) => {
-      const option = document.createElement("option");
-      option.value = project.id;
-      option.textContent = project.title || t("creator.challenge.untitled");
-      if (project.id === activeProjectId || project.id === previous) {
-        option.selected = true;
-      }
-      elements.projectSelector.append(option);
-    });
-  }
-
-  if (elements.playerProjectSelector) {
-    const previous = elements.playerProjectSelector.value;
-    elements.playerProjectSelector.innerHTML = "";
-    const placeholderOption = document.createElement("option");
-    placeholderOption.value = "";
-    placeholderOption.textContent = t("player.select.placeholder");
-    elements.playerProjectSelector.append(placeholderOption);
-    projects.forEach((project) => {
-      const option = document.createElement("option");
-      option.value = project.id;
-      option.textContent = project.title || t("creator.challenge.untitled");
-      if (project.id === previous) {
-        option.selected = true;
-      }
-      elements.playerProjectSelector.append(option);
-    });
-  }
-}
-
-function renderProjectForm() {
-  const project = getActiveProject();
-  if (!project) {
-    elements.projectTitle.value = "";
-    elements.projectAuthor.value = "";
-    elements.projectStory.value = "";
-    elements.projectReward.value = "";
-    elements.challengeList.innerHTML = "";
-    if (elements.projectForm) {
-      applyTranslationsTo(elements.projectForm);
-    }
-    return;
-  }
-  elements.projectTitle.value = project.title || "";
-  elements.projectAuthor.value = project.author || "";
-  elements.projectStory.value = project.story || "";
-  elements.projectReward.value = project.rewardMessage || "";
-  renderChallenges(project);
-  if (elements.projectForm) {
-    applyTranslationsTo(elements.projectForm);
-  }
-}
-
-function renderChallenges(project) {
-  elements.challengeList.innerHTML = "";
-  project.challenges.forEach((challenge, index) => {
-    const node = elements.challengeTemplate.content.firstElementChild.cloneNode(true);
-    node.dataset.index = index;
-    const summaryLabel = node.querySelector(".challenge-name");
-    const displayTitle = challenge.title || t("creator.challenge.untitled");
-    summaryLabel.textContent = t("creator.challenge.summary", {
-      index: index + 1,
-      title: displayTitle,
-    });
-
-    const controlButtons = node.querySelectorAll(".challenge-controls button");
-    controlButtons.forEach((button) => {
-      button.addEventListener("click", () => handleChallengeAction(project, index, button.dataset.action));
-    });
-
-    const titleInput = node.querySelector('input[data-field="title"]');
-    const descriptionInput = node.querySelector('textarea[data-field="description"]');
-    const answerInput = node.querySelector('input[data-field="answer"]');
-    const successInput = node.querySelector('input[data-field="successMessage"]');
-    const hintInput = node.querySelector('textarea[data-field="hint"]');
-
-    titleInput.value = challenge.title || "";
-    descriptionInput.value = challenge.description || "";
-    answerInput.value = challenge.answer || "";
-    successInput.value = challenge.successMessage || "";
-    hintInput.value = challenge.hint || "";
-
-    titleInput.addEventListener("input", handleChallengeField(project, index, "title"));
-    descriptionInput.addEventListener("input", handleChallengeField(project, index, "description"));
-    answerInput.addEventListener("input", handleChallengeField(project, index, "answer"));
-    successInput.addEventListener("input", handleChallengeField(project, index, "successMessage"));
-    hintInput.addEventListener("input", handleChallengeField(project, index, "hint"));
-
-    elements.challengeList.appendChild(node);
-  });
-  applyTranslationsTo(elements.challengeList);
-}
-
-function handleProjectField(field) {
-  return (event) => {
-    const project = getActiveProject();
-    if (!project) return;
-    project[field] = event.target.value;
-    project.updatedAt = new Date().toISOString();
-    persistProjects();
-    if (field === "title") {
-      renderSelectors();
-      updateChallengeHeaders(project);
-    }
-  };
-}
-
-function handleChallengeField(project, index, field) {
-  return (event) => {
-    project.challenges[index][field] = event.target.value;
-    project.updatedAt = new Date().toISOString();
-    persistProjects();
-    if (field === "title") {
-      updateChallengeHeaders(project);
-    }
-  };
-}
-
-function handleChallengeAction(project, index, action) {
-  if (action === "delete") {
-    const [removed] = project.challenges.splice(index, 1);
-    project.updatedAt = new Date().toISOString();
-    persistProjects();
-    renderChallenges(project);
-    const displayTitle = removed?.title || t("creator.challenge.untitled");
-    showToast(t("toast.challenge.removed", { title: displayTitle }));
-    return;
-  }
-  if (action === "move-up" && index > 0) {
-    swap(project.challenges, index, index - 1);
-  }
-  if (action === "move-down" && index < project.challenges.length - 1) {
-    swap(project.challenges, index, index + 1);
-  }
-  project.updatedAt = new Date().toISOString();
-  persistProjects();
-  renderChallenges(project);
-}
-
-function updateChallengeHeaders(project) {
-  const items = elements.challengeList.querySelectorAll(".challenge-item");
-  items.forEach((item, idx) => {
-    const challenge = project.challenges[idx];
-    const title = challenge?.title || t("creator.challenge.untitled");
-    item.querySelector(".challenge-name").textContent = t("creator.challenge.summary", {
-      index: idx + 1,
-      title,
-    });
-  });
-}
-
-function showPlayerView(project, progress) {
-  elements.playerView.classList.remove("hidden");
-  elements.playerTitle.textContent = project.title || t("creator.challenge.untitled");
-  const total = project.challenges.length;
-  const metaParts = [];
-  if (project.author && project.author.trim()) {
-    metaParts.push(t("player.meta.author", { author: project.author }));
-  }
-  metaParts.push(t("player.meta.challenges", { count: total }));
-  elements.playerMeta.textContent = metaParts.filter(Boolean).join(" · ");
-  elements.playerStory.textContent = project.story || "";
-  if (!project.story) {
-    elements.playerStory.classList.add("hidden");
-  } else {
-    elements.playerStory.classList.remove("hidden");
-  }
-
-  const currentIndex = Math.min(progress.currentIndex ?? 0, total);
-  if (currentIndex >= total) {
-    renderReward(project);
-  } else {
-    renderCurrentChallenge(project, progress);
-  }
-}
-
-function hidePlayerView() {
-  elements.playerView.classList.add("hidden");
-  elements.challengeView.classList.add("hidden");
-  elements.rewardView.classList.add("hidden");
-  elements.challengeFeedback.textContent = "";
-  if (
-    elements.challengeActions &&
-    elements.challengeHintButton &&
-    elements.challengeHintText
-  ) {
-    elements.challengeActions.classList.add("hidden");
-    elements.challengeHintText.textContent = "";
-    elements.challengeHintButton.disabled = false;
-    elements.challengeHintButton.dataset.hint = "";
-    elements.challengeHintButton.dataset.index = "";
-  }
-}
-
-function renderCurrentChallenge(project, progress) {
-  const index = progress.currentIndex ?? 0;
-  const challenge = project.challenges[index];
-  if (!challenge) return;
-  elements.challengeView.classList.remove("hidden");
-  elements.rewardView.classList.add("hidden");
-  const total = project.challenges.length;
-  const title = challenge.title || t("player.challenge.untitled");
-  elements.challengeTitle.textContent = t("player.challenge.title", {
-    index: index + 1,
-    total,
-    title,
-  });
-  elements.challengeDescription.textContent =
-    challenge.description || t("player.challenge.defaultDescription");
-  elements.challengeFeedback.textContent = "";
-  elements.challengeFeedback.classList.remove("error");
-  elements.challengeAnswer.value = "";
-  elements.challengeAnswer.placeholder = t("player.challenge.answer.placeholder");
-  elements.challengeAnswer.focus();
-  if (elements.challengeActions && elements.challengeHintButton && elements.challengeHintText) {
-    const hintValue = (challenge.hint || "").trim();
-    if (hintValue) {
-      elements.challengeActions.classList.remove("hidden");
-      elements.challengeHintText.textContent = "";
-      elements.challengeHintButton.disabled = false;
-      elements.challengeHintButton.dataset.hint = hintValue;
-      elements.challengeHintButton.dataset.index = index;
-      elements.challengeHintButton.textContent = t("player.challenge.hintButton");
-    } else {
-      elements.challengeActions.classList.add("hidden");
-      elements.challengeHintText.textContent = "";
-      elements.challengeHintButton.dataset.hint = "";
-      elements.challengeHintButton.dataset.index = "";
-    }
-  }
-}
-
-function renderReward(project) {
-  elements.challengeView.classList.add("hidden");
-  elements.rewardView.classList.remove("hidden");
-  elements.rewardMessage.textContent =
-    project.rewardMessage ||
-    t("player.reward.default");
-  if (elements.challengeActions) {
-    elements.challengeActions.classList.add("hidden");
-  }
-  if (elements.challengeHintText) {
-    elements.challengeHintText.textContent = "";
-  }
-  if (elements.challengeHintButton) {
-    elements.challengeHintButton.disabled = false;
-    elements.challengeHintButton.dataset.hint = "";
-    elements.challengeHintButton.dataset.index = "";
-  }
-}
-
-function showFeedback(message, isError) {
-  elements.challengeFeedback.textContent = message;
-  elements.challengeFeedback.classList.toggle("error", Boolean(isError));
-}
-
-function showToast(message, options = {}) {
-  const { error } = options;
-  elements.toast.textContent = message;
-  elements.toast.classList.toggle("error", Boolean(error));
-  elements.toast.classList.remove("hidden");
-  clearTimeout(elements.toast?.timeoutId);
-  elements.toast.timeoutId = setTimeout(() => {
-    elements.toast.classList.add("hidden");
-  }, 2800);
-}
-
-function handleStorageEvent(event) {
-  if (event.key === STORAGE_KEY) {
-    projects = loadProjects();
-    ensureActiveProject();
-    renderSelectors();
-    renderProjectForm();
-  }
-}
-
-window.addEventListener("storage", handleStorageEvent);
-
-function loadProjects() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) {
-      return [];
-    }
-    const parsed = JSON.parse(raw);
-    if (Array.isArray(parsed)) {
-      return parsed.map(normalizeProject);
-    }
-  } catch (error) {
-    console.error("No s'han pogut carregar les gimcanes guardades", error);
-  }
-  return [];
-}
-
-function persistProjects() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(projects));
-  renderSelectors();
-}
-
-function getActiveProject() {
-  return projects.find((project) => project.id === activeProjectId) ?? null;
-}
-
-function getPlayerProject() {
-  const projectId = elements.playerProjectSelector.value;
-  return projects.find((project) => project.id === projectId) ?? null;
-}
-
-function createEmptyProject() {
-  const timestamp = new Date().toISOString();
-  return {
-    id: generateId(),
-    title: t("creator.project.defaultTitle"),
-    author: "",
-    story: "",
-    rewardMessage: t("player.reward.default"),
-    challenges: [],
-    createdAt: timestamp,
-    updatedAt: timestamp,
-    language: currentLanguage,
-  };
-}
-
-function validateProject(candidate) {
-  if (typeof candidate !== "object" || candidate === null) {
-    throw new Error("Proyecto inválido.");
-  }
-  if (!Array.isArray(candidate.challenges)) {
-    throw new Error("Faltan los retos.");
-  }
-  candidate.challenges.forEach((challenge) => {
-    if (typeof challenge.title !== "string" || typeof challenge.answer !== "string") {
-      throw new Error("Reptes invàlids.");
-    }
-    if (typeof challenge.successMessage !== "string") {
-      challenge.successMessage =
-        challenge.successMessage === undefined || challenge.successMessage === null
-          ? ""
-          : String(challenge.successMessage);
-    }
-    if (typeof challenge.hint !== "string") {
-      challenge.hint =
-        challenge.hint === undefined || challenge.hint === null ? "" : String(challenge.hint);
-    }
-  });
-}
-
-function normalizeAnswer(value) {
-  return value.trim().toLowerCase();
-}
-
-function progressKey(projectId) {
-  return `${PROGRESS_KEY_PREFIX}${projectId}`;
-}
-
-function loadProgress(projectId) {
-  try {
-    const raw = localStorage.getItem(progressKey(projectId));
-    if (!raw) {
-      return { currentIndex: 0 };
-    }
-    const parsed = JSON.parse(raw);
-    if (typeof parsed.currentIndex === "number") {
-      return parsed;
-    }
-  } catch (error) {
-    console.error("No s'ha pogut carregar el progrés", error);
-  }
-  return { currentIndex: 0 };
-}
-
-function saveProgress(projectId, progress) {
-  localStorage.setItem(progressKey(projectId), JSON.stringify(progress));
-}
-
-function generateId() {
-  if (crypto?.randomUUID) {
-    return crypto.randomUUID();
-  }
-  return `proj_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`;
-}
-
-function swap(array, i, j) {
-  [array[i], array[j]] = [array[j], array[i]];
-}
-
-function deepClone(value) {
-  if (typeof structuredClone === "function") {
-    return structuredClone(value);
-  }
-  return JSON.parse(JSON.stringify(value));
-}
-
-function normalizeProject(project) {
-  if (!project || typeof project !== "object") {
-    return createEmptyProject();
-  }
-  const languageCandidate =
-    typeof project.language === "string" && translations[project.language]
-      ? project.language
-      : DEFAULT_LANGUAGE;
-  project.language = languageCandidate;
-  project.title = typeof project.title === "string" ? project.title : "";
-  project.author = typeof project.author === "string" ? project.author : "";
-  project.story = typeof project.story === "string" ? project.story : "";
-  project.rewardMessage =
-    typeof project.rewardMessage === "string"
-      ? project.rewardMessage
-      : project.rewardMessage == null
-      ? ""
-      : String(project.rewardMessage);
-  if (!Array.isArray(project.challenges)) {
-    project.challenges = [];
-  }
-  project.challenges = project.challenges.map((challenge) => {
-    const normalizedChallenge = {
-      id: challenge.id || generateId(),
-      title: typeof challenge.title === "string" ? challenge.title : "",
-      description: typeof challenge.description === "string" ? challenge.description : "",
-      answer: typeof challenge.answer === "string" ? challenge.answer : "",
-      successMessage:
-        typeof challenge.successMessage === "string"
-          ? challenge.successMessage
-          : challenge.successMessage == null
-          ? ""
-          : String(challenge.successMessage),
-      hint:
-        typeof challenge.hint === "string"
-          ? challenge.hint
-          : challenge.hint == null
-          ? ""
-          : String(challenge.hint),
-    };
-    return normalizedChallenge;
-  });
-  return project;
-}
-
-function prepareProjectForExport(project) {
-  const clone = deepClone(project);
-  clone.language = currentLanguage;
-  return normalizeProject(clone);
-}
-
-function registerServiceWorker() {
-  if (!("serviceWorker" in navigator)) return;
-  window.addEventListener("load", () => {
-    navigator.serviceWorker
-      .register("service-worker.js")
-      .catch((error) => console.error("SW registration failed", error));
-  });
-}
-
-function buildStandaloneHtml(project) {
-  const normalized = normalizeProject(project);
-  const language =
-    typeof normalized.language === "string" && translations[normalized.language]
-      ? normalized.language
-      : DEFAULT_LANGUAGE;
-  const safeTitle = escapeHtml(
-    normalized.title || translateForLang("player.challenge.untitled", language)
-  );
-  const metaParts = [];
-  if (normalized.author && normalized.author.trim()) {
-    metaParts.push(
-      translateForLang("player.meta.author", language, {
-        author: escapeHtml(normalized.author),
-      })
-    );
-  }
-  metaParts.push(
-    translateForLang("player.meta.challenges", language, {
-      count: normalized.challenges.length,
-    })
-  );
-  const metaText = metaParts.length ? `<p class="meta">${metaParts.join(" · ")}</p>` : "";
-  const introSection =
-    normalized.story && normalized.story.trim()
-      ? `<section class="intro"><h2>${escapeHtml(
-          translateForLang("player.intro.title", language)
-        )}</h2><p>${newlineToBr(escapeHtml(normalized.story))}</p></section>`
-      : "";
-  const defaultReward = escapeHtml(translateForLang("player.reward.default", language));
-  const rewardMessage =
-    normalized.rewardMessage && normalized.rewardMessage.trim()
-      ? newlineToBr(escapeHtml(normalized.rewardMessage))
-      : defaultReward;
-  const sanitizedData = sanitizeForInlineScript(
-    JSON.stringify({ ...normalized, language }, null, 2)
-  );
-  const textBundle = {
-    progress: translateForLang("player.progress", language),
-    challengeTitle: translateForLang("player.challenge.title", language),
-    challengeUntitled: translateForLang("player.challenge.untitled", language),
-    challengeDefaultDescription: translateForLang(
-      "player.challenge.defaultDescription",
-      language
-    ),
-    hintButton: translateForLang("player.challenge.hintButton", language),
-    feedbackNoHint: translateForLang("player.feedback.noHint", language),
-    feedbackNoAnswer: translateForLang("player.feedback.noAnswer", language),
-    feedbackIncorrect: translateForLang("player.feedback.incorrect", language),
-    feedbackCorrect: translateForLang("player.feedback.correct", language),
-    progressReset: translateForLang("toast.player.progressReset", language),
-    rewardDefault: translateForLang("player.reward.default", language),
-    rewardTitle: translateForLang("player.reward.title", language),
-    answerPlaceholder: translateForLang("player.challenge.answer.placeholder", language)
-  };
-  const sanitizedTextBundle = sanitizeForInlineScript(JSON.stringify(textBundle, null, 2));
-  const subtitle = escapeHtml(translateForLang("app.subtitle", language));
-  const heroTagGamification = escapeHtml(translateForLang("app.hero.gamification", language));
-  const heroTagActiveLearning = escapeHtml(translateForLang("app.hero.activeLearning", language));
-  const heroTagTeamwork = escapeHtml(translateForLang("app.hero.teamwork", language));
-  const startButton = escapeHtml(translateForLang("player.actions.start", language));
-  const resetButton = escapeHtml(translateForLang("player.actions.reset", language));
-  const answerLabel = escapeHtml(translateForLang("player.challenge.answer.label", language));
-  const answerPlaceholder = escapeHtml(
-    translateForLang("player.challenge.answer.placeholder", language)
-  );
-  const submitLabel = escapeHtml(translateForLang("player.challenge.submit", language));
-  const hintButtonText = escapeHtml(translateForLang("player.challenge.hintButton", language));
-  const rewardTitle = escapeHtml(translateForLang("player.reward.title", language));
-
-  return `<!DOCTYPE html>
-<html lang="${language}">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>${safeTitle}</title>
-<link rel="icon" href="data:," />
-<style>
-:root {
-  font-family: "Inter", "Rubik", "Segoe UI", system-ui, -apple-system, sans-serif;
-  line-height: 1.6;
-  color: #0f172a;
-  background: radial-gradient(circle at 10% 20%, #eef2ff 0%, #e9f5fb 40%, #f8f4ff 100%);
-}
-body {
-  margin: 0;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  padding: 2.5rem 1.5rem 4rem;
-  background: radial-gradient(circle at 10% 20%, #eef2ff 0%, #e9f5fb 40%, #f8f4ff 100%);
-  position: relative;
-  overflow-x: hidden;
-}
-body::before,
-body::after {
-  content: "";
-  position: fixed;
-  width: 420px;
-  height: 420px;
-  border-radius: 50%;
-  filter: blur(110px);
-  opacity: 0.55;
-  pointer-events: none;
-  z-index: 0;
-}
-body::before {
-  top: -140px;
-  right: -120px;
-  background: rgba(99, 102, 241, 0.2);
-  animation: float 16s ease-in-out infinite;
-}
-body::after {
-  bottom: -160px;
-  left: -100px;
-  background: rgba(59, 130, 246, 0.16);
-  animation: float 18s ease-in-out infinite reverse;
-}
-main,
-header,
-section,
-article {
-  position: relative;
-  z-index: 1;
-}
-main {
-  width: min(780px, 100%);
-  display: grid;
-  gap: 1.75rem;
-}
-header.top {
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 1.75rem;
-  padding: 1.8rem 2rem;
-  border: 1px solid rgba(148, 163, 184, 0.25);
-  box-shadow: 0 20px 40px rgba(37, 99, 235, 0.12);
-  backdrop-filter: blur(12px);
-}
-header.top h1 {
-  margin: 0;
-  font-size: clamp(1.9rem, 4vw, 2.6rem);
-  font-weight: 700;
-  background: linear-gradient(135deg, #2563eb, #7c3aed);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-header.top .subtitle {
-  margin-top: 0.45rem;
-  color: #4b5563;
-  font-weight: 500;
-}
-header.top .meta,
-#progress-label {
-  margin: 0.5rem 0 0;
-  color: #4b5563;
-  font-weight: 500;
-}
-.hero-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-top: 1rem;
-}
-.hero-tag {
-  padding: 0.35rem 0.8rem;
-  border-radius: 999px;
-  background: rgba(124, 58, 237, 0.12);
-  color: #7c3aed;
-  font-weight: 600;
-  font-size: 0.85rem;
-  letter-spacing: 0.01em;
-  box-shadow: inset 0 0 0 1px rgba(124, 58, 237, 0.25);
-}
-.card {
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 1.5rem;
-  padding: 1.9rem;
-  border: 1px solid rgba(148, 163, 184, 0.25);
-  box-shadow: 0 20px 40px rgba(37, 99, 235, 0.12);
-  backdrop-filter: blur(10px);
-  display: grid;
-  gap: 1.35rem;
-}
-.card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(124, 58, 237, 0.02));
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  pointer-events: none;
-}
-.card:hover::before {
-  opacity: 1;
-}
-.section {
-  display: grid;
-  gap: 0.9rem;
-}
-.intro {
-  background: rgba(37, 99, 235, 0.08);
-  border-radius: 0.95rem;
-  padding: 1.1rem 1.25rem;
-  line-height: 1.6;
-}
-label {
-  font-weight: 600;
-  color: #0f172a;
-}
-input[type="text"] {
-  width: 100%;
-  padding: 0.7rem 0.85rem;
-  border-radius: 0.95rem;
-  border: 1px solid rgba(148, 163, 184, 0.4);
-  font: inherit;
-  box-sizing: border-box;
-  background: rgba(255, 255, 255, 0.9);
-  transition: border 0.2s ease, box-shadow 0.2s ease;
-}
-input[type="text"]:focus {
-  outline: none;
-  border-color: #2563eb;
-  box-shadow: 0 12px 30px rgba(37, 99, 235, 0.18), 0 0 0 3px rgba(37, 99, 235, 0.22);
-}
-button {
-  font: inherit;
-  border-radius: 0.95rem;
-  padding: 0.75rem 1.45rem;
-  border: 1px solid transparent;
-  cursor: pointer;
-  transition: transform 0.1s ease, box-shadow 0.2s ease, filter 0.2s ease;
-  box-shadow: 0 14px 30px rgba(37, 99, 235, 0.18);
-}
-button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-button.primary {
-  background: linear-gradient(135deg, #2563eb, #7c3aed);
-  color: #ffffff;
-}
-button.primary:hover {
-  filter: brightness(1.05);
-}
-button.secondary {
-  background: rgba(37, 99, 235, 0.16);
-  color: #2563eb;
-  border-color: rgba(37, 99, 235, 0.25);
-  box-shadow: none;
-}
-button.secondary:hover {
-  background: rgba(37, 99, 235, 0.22);
-}
-button:active {
-  transform: translateY(1px);
-  box-shadow: 0 10px 20px rgba(37, 99, 235, 0.16);
-}
-.form-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.85rem;
-}
-.hint-actions {
-  display: grid;
-  gap: 0.5rem;
-  background: rgba(37, 99, 235, 0.08);
-  border-radius: 0.9rem;
-  padding: 0.85rem 0.95rem;
-}
-.hint-actions button {
-  justify-self: start;
-}
-.hint-text {
-  margin: 0;
-  font-style: italic;
-  color: #4b5563;
-  white-space: pre-wrap;
-}
-#feedback {
-  min-height: 1.25rem;
-}
-#feedback.error {
-  color: #dc2626;
-}
-#feedback.success {
-  color: #16a34a;
-}
-.hidden {
-  display: none !important;
-}
-@keyframes float {
-  0%, 100% {
-    transform: translate3d(0, 0, 0);
-  }
-  45% {
-    transform: translate3d(28px, 20px, 0);
-  }
-  75% {
-    transform: translate3d(-20px, -24px, 0);
-  }
-}
-@media (max-width: 720px) {
-  body {
-    padding: 2rem 1.25rem 3.5rem;
-  }
-  header.top,
-  .card {
-    padding: 1.5rem 1.35rem;
-  }
-  .form-actions {
-    flex-direction: column;
-    align-items: stretch;
-  }
-}
-</style>
-</head>
-<body>
-<main>
-  <header class="top">
-    <h1>${safeTitle}</h1>
-    <p class="subtitle">${subtitle}</p>
-    ${metaText}
-    <p id="progress-label" class="meta"></p>
-    <div class="hero-tags">
-      <span class="hero-tag">${heroTagGamification}</span>
-      <span class="hero-tag">${heroTagActiveLearning}</span>
-      <span class="hero-tag">${heroTagTeamwork}</span>
-    </div>
-  </header>
-  <article class="card">
-    ${introSection}
-    <section id="challenge-section" class="section">
-      <h2 id="challenge-title"></h2>
-      <p id="challenge-description"></p>
-      <form id="challenge-form" autocomplete="off">
-        <label for="challenge-answer">${answerLabel}</label>
-        <input
-          id="challenge-answer"
-          type="text"
-          placeholder="${answerPlaceholder}"
-          autocomplete="one-time-code"
-          required
-        />
-        <div class="form-actions">
-          <button type="submit" class="primary">${submitLabel}</button>
-          <button type="button" id="reset-progress" class="secondary">${resetButton}</button>
-        </div>
-      </form>
-      <div id="hint-actions" class="hint-actions">
-        <button type="button" id="hint-button" class="secondary">${hintButtonText}</button>
-        <p id="hint-text" class="hint-text" role="status"></p>
-      </div>
-      <p id="feedback" role="status"></p>
-    </section>
-    <section id="reward-section" class="section hidden">
-      <h2>${rewardTitle}</h2>
-      <p>${rewardMessage}</p>
-      <button type="button" id="restart" class="primary">${startButton}</button>
-    </section>
-  </article>
-</main>
-<script>
-const PROJECT_DATA = ${sanitizedData};
-</script>
-<script>
-const TEXT = ${sanitizedTextBundle};
-(() => {
-  const project = PROJECT_DATA;
-  const total = project.challenges.length;
-  const storageKey = "edugincanaStandalone:" + project.id;
-  const challengeSection = document.getElementById("challenge-section");
-  const rewardSection = document.getElementById("reward-section");
-  const challengeTitle = document.getElementById("challenge-title");
-  const challengeDescription = document.getElementById("challenge-description");
-  const progressLabel = document.getElementById("progress-label");
-  const form = document.getElementById("challenge-form");
-  const answerInput = document.getElementById("challenge-answer");
-  const feedback = document.getElementById("feedback");
-  const resetBtn = document.getElementById("reset-progress");
-  const restartBtn = document.getElementById("restart");
-  const hintActions = document.getElementById("hint-actions");
-  const hintButton = document.getElementById("hint-button");
-  const hintText = document.getElementById("hint-text");
-  hintButton.textContent = TEXT.hintButton;
-  answerInput.placeholder = TEXT.answerPlaceholder;
-  let index = loadProgress();
-  render();
-
-  hintButton.dataset.hint = "";
-
-  hintButton.addEventListener("click", () => {
-    const hint = hintButton.dataset.hint;
-    if (!hint) {
-      showFeedback(TEXT.feedbackNoHint, true);
-      return;
-    }
-    hintText.textContent = hint;
-    hintButton.disabled = true;
-  });
-
-  form.addEventListener("submit", (event) => {
-    event.preventDefault();
-    const challenge = project.challenges[index];
-    if (!challenge) return;
-    const userAnswer = normalize(answerInput.value);
-    if (!userAnswer) {
-      showFeedback(TEXT.feedbackNoAnswer, true);
-      return;
-    }
-    if (userAnswer !== normalize(challenge.answer)) {
-      showFeedback(TEXT.feedbackIncorrect, true);
-      return;
-    }
-    index += 1;
-    saveProgress(index);
-    const message =
-      challenge.successMessage && challenge.successMessage.trim()
-        ? challenge.successMessage
-        : TEXT.feedbackCorrect;
-    showFeedback(message, false);
-    render();
-  });
-
-  resetBtn.addEventListener("click", () => {
-    index = 0;
-    saveProgress(index);
-    showFeedback(TEXT.progressReset, false);
-    render();
-  });
-
-  restartBtn.addEventListener("click", () => {
-    index = 0;
-    saveProgress(index);
-    showFeedback("", false);
-    render();
-  });
-
-  function render() {
-    progressLabel.textContent = format(TEXT.progress, {
-      current: Math.min(index, total),
-      total,
-    });
-    if (index >= total) {
-      challengeSection.classList.add("hidden");
-      rewardSection.classList.remove("hidden");
-      answerInput.value = "";
-      hintActions.classList.add("hidden");
-      hintText.textContent = "";
-      hintButton.dataset.hint = "";
-      hintButton.disabled = false;
-      return;
-    }
-    challengeSection.classList.remove("hidden");
-    rewardSection.classList.add("hidden");
-    const current = project.challenges[index];
-    const title = current.title || TEXT.challengeUntitled;
-    challengeTitle.textContent = format(TEXT.challengeTitle, {
-      index: index + 1,
-      total,
-      title,
-    });
-    challengeDescription.textContent =
-      current.description || TEXT.challengeDefaultDescription;
-    answerInput.value = "";
-    answerInput.focus();
-    hintText.textContent = "";
-    const hintValue = current.hint && current.hint.trim();
-    if (hintValue) {
-      hintActions.classList.remove("hidden");
-      hintButton.dataset.hint = hintValue;
-      hintButton.disabled = false;
-      hintButton.textContent = TEXT.hintButton;
-    } else {
-      hintActions.classList.add("hidden");
-      hintButton.dataset.hint = "";
-      hintButton.disabled = false;
-    }
-  }
-
-  function showFeedback(message, isError) {
-    feedback.textContent = message;
-    feedback.classList.toggle("error", Boolean(isError));
-    feedback.classList.toggle("success", !isError && Boolean(message));
-  }
-
-  function loadProgress() {
-    try {
-      const raw = localStorage.getItem(storageKey);
-      if (!raw) {
-        return 0;
-      }
-      const parsed = JSON.parse(raw);
-      if (typeof parsed.index === "number") {
-        return Math.min(parsed.index, total);
-      }
-    } catch (error) {
-      console.warn("No s'ha pogut carregar el progrés emmagatzemat.", error);
-    }
-    return 0;
-  }
-
-  function saveProgress(value) {
-    try {
-      localStorage.setItem(storageKey, JSON.stringify({ index: value }));
-    } catch (error) {
-      console.warn("No s'ha pogut guardar el progrés.", error);
-    }
-  }
-
-  function normalize(value) {
-    return value.trim().toLowerCase();
-  }
-
-  function format(template, params) {
-    return template.replace(/\{\{(\w+)\}\}/g, (match, token) => {
-      return Object.prototype.hasOwnProperty.call(params, token) ? params[token] : match;
-    });
-  }
-})();
-</script>
-</body>
-</html>`;
-}
-
-function downloadFile(filename, content, mimeType = "text/plain") {
+  const observer = new MutationObserverfunction downloadFile(filename, content, mimeType = "text/plain") {
   const blob = new Blob([content], { type: `${mimeType};charset=utf-8` });
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
@@ -1744,4 +746,169 @@ function escapeHtml(value) {
 
 function newlineToBr(value) {
   return value.replace(/\r?\n/g, "<br>");
+}
+
+const MARKDOWN_SAFE_PROTOCOLS = /^(https?:|mailto:|tel:|sms:)/i;
+
+function renderMarkdown(target, markdown) {
+  if (!target) return "";
+  const html = markdownToHtml(typeof markdown === "string" ? markdown : "");
+  if (html) {
+    target.innerHTML = html;
+  } else {
+    target.textContent = "";
+  }
+  return html;
+}
+
+function markdownToHtml(markdown) {
+  if (!markdown) {
+    return "";
+  }
+  const normalized = markdown.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
+  const lines = normalized.split("\n");
+  const html = [];
+  let inUnorderedList = false;
+  let inOrderedList = false;
+  let paragraphBuffer = [];
+
+  const closeLists = () => {
+    if (inUnorderedList) {
+      html.push("</ul>");
+      inUnorderedList = false;
+    }
+    if (inOrderedList) {
+      html.push("</ol>");
+      inOrderedList = false;
+    }
+  };
+
+  const flushParagraph = () => {
+    if (!paragraphBuffer.length) return;
+    const content = paragraphBuffer.join("\n");
+    html.push(`<p>${renderInlineMarkdown(content)}</p>`);
+    paragraphBuffer = [];
+  };
+
+  lines.forEach((line) => {
+    const unorderedMatch = line.match(/^\s*([-*])\s+(.+)/);
+    const orderedMatch = line.match(/^\s*\d+\.\s+(.+)/);
+    const headingMatch = line.match(/^(#{1,6})\s+(.+)/);
+    const quoteMatch = line.match(/^\s*>\s+(.*)/);
+    const trimmed = line.trim();
+
+    if (!trimmed) {
+      flushParagraph();
+      closeLists();
+      return;
+    }
+
+    if (unorderedMatch) {
+      flushParagraph();
+      if (!inUnorderedList) {
+        closeLists();
+        html.push("<ul>");
+        inUnorderedList = true;
+      }
+      html.push(`<li>${renderInlineMarkdown(unorderedMatch[2])}</li>`);
+      return;
+    }
+
+    if (orderedMatch) {
+      flushParagraph();
+      if (!inOrderedList) {
+        closeLists();
+        html.push("<ol>");
+        inOrderedList = true;
+      }
+      html.push(`<li>${renderInlineMarkdown(orderedMatch[1])}</li>`);
+      return;
+    }
+
+    closeLists();
+
+    if (headingMatch) {
+      flushParagraph();
+      const level = headingMatch[1].length;
+      html.push(`<h${level}>${renderInlineMarkdown(headingMatch[2])}</h${level}>`);
+      return;
+    }
+
+    if (quoteMatch) {
+      flushParagraph();
+      html.push(`<blockquote>${renderInlineMarkdown(quoteMatch[1])}</blockquote>`);
+      return;
+    }
+
+    paragraphBuffer.push(line);
+  });
+
+  flushParagraph();
+  closeLists();
+
+  return html.join("");
+}
+
+function renderInlineMarkdown(text) {
+  if (!text) return "";
+  let escaped = escapeHtml(text);
+
+  const codeReplacements = [];
+  escaped = escaped.replace(/`([^`]+)`/g, (_, code) => {
+    const placeholder = `__CODE_BLOCK_${codeReplacements.length}__`;
+    codeReplacements.push(`<code>${code}</code>`);
+    return placeholder;
+  });
+
+  escaped = escaped.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (match, alt, url) => {
+    const safeUrl = sanitizeUrl(url);
+    if (!safeUrl) return alt;
+    const safeAlt = escapeHtml(alt);
+    return `<img src="${safeUrl}" alt="${safeAlt}" loading="lazy" />`;
+  });
+
+  escaped = escaped.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (match, label, url) => {
+    const safeUrl = sanitizeUrl(url);
+    const safeLabel = renderInlineMarkdown(label);
+    if (!safeUrl) return safeLabel;
+    return `<a href="${safeUrl}" target="_blank" rel="noopener noreferrer">${safeLabel}</a>`;
+  });
+
+  escaped = escaped.replace(/\*\*([^*\n]+)\*\*/g, "<strong>$1</strong>");
+  escaped = escaped.replace(/__([^_\n]+)__/g, "<strong>$1</strong>");
+
+  escaped = escaped.replace(/(\s|^)\*(?!\s)([^*\n]+?)\*(?=\s|$)/g, "$1<em>$2</em>");
+  escaped = escaped.replace(/(\s|^)_(?!\s)([^_\n]+?)_(?=\s|$)/g, "$1<em>$2</em>");
+
+  escaped = escaped.replace(/~~([^~\n]+)~~/g, "<del>$1</del>");
+
+  escaped = escaped.replace(/\r?\n/g, "<br>");
+
+  codeReplacements.forEach((codeHtml, index) => {
+    const placeholder = `__CODE_BLOCK_${index}__`;
+    escaped = escaped.replace(placeholder, codeHtml);
+  });
+
+  return escaped;
+}
+
+function sanitizeUrl(rawUrl) {
+  if (!rawUrl) return null;
+  const url = rawUrl.trim();
+  if (!url) return null;
+  if (url.startsWith("#")) return url;
+  if (url.startsWith("/") || url.startsWith("./") || url.startsWith("../")) return url;
+  if (MARKDOWN_SAFE_PROTOCOLS.test(url)) return url;
+  return null;
+}
+
+function showFeedback(message, isError = false) {
+  if (!elements.challengeFeedback) return;
+  const feedbackElement = elements.challengeFeedback;
+  feedbackElement.classList.toggle("error", Boolean(isError));
+  if (!message) {
+    feedbackElement.textContent = "";
+    return;
+  }
+  renderMarkdown(feedbackElement, message);
 }
