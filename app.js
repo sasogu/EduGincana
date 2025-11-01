@@ -34,9 +34,13 @@ const translations = {
     "creator.challenges.title": "Reptes",
     "creator.challenges.exportJson": "Exporta JSON",
     "creator.challenges.exportHtml": "Exporta HTML",
+  "creator.challenges.exportZip": "Exporta ZIP",
     "creator.challenges.duplicate": "Duplica",
     "creator.challenges.hint":
       "Ordena els reptes segons la seqüència desitjada. Cada resposta correcta desbloqueja el següent.",
+    "creator.challenges.attach.desc": "Adjunts per a la descripció",
+    "creator.challenges.attach.hint": "Adjunts per a la pista",
+    "creator.challenges.attach.add": "Afig fitxers",
     "creator.challenges.new.legend": "Afegeix nou repte",
     "creator.challenges.new.title.label": "Títol del repte",
     "creator.challenges.new.title.placeholder": "Ex. Repte de pistes",
@@ -51,9 +55,12 @@ const translations = {
     "creator.challenges.new.button": "Afegeix repte",
     "creator.import.title": "Importa gimcana",
     "creator.import.description":
-      "Si una altra persona et comparteix un JSON, enganxa'l ací per afegir-lo a la teua col·lecció.",
-    "creator.import.placeholder": '{"id":"...","title":"..."}',
+      "Selecciona un fitxer ZIP per afegir-lo a la teua col·lecció.",
+    "creator.import.file.label": "Fitxer ZIP",
+    "creator.import.text.label": "",
+    "creator.import.placeholder": "",
     "creator.import.button": "Importa",
+    "editor.markdownHint": "Pots emprar Markdown (negreta, llistes, enllaços...).",
     "creator.challenge.summary": "Repte {{index}}. {{title}}",
     "creator.challenge.untitled": "Repte sense títol",
     "creator.project.defaultTitle": "Nova gimcana",
@@ -87,7 +94,7 @@ const translations = {
     "toast.project.requireChallenge": "Afig almenys un repte abans d'exportar.",
     "toast.project.jsonCopied": "JSON copiat al porta-retalls.",
     "toast.project.jsonFallback": "Copia manualment el text mostrat.",
-    "toast.project.import.empty": "Introdueix un JSON vàlid per importar.",
+    "toast.project.import.empty": "Selecciona un fitxer o enganxa un JSON vàlid per importar.",
     "toast.project.import.success": "Gimcana importada correctament.",
     "toast.project.import.error": "No s'ha pogut importar el JSON proporcionat.",
     "toast.challenge.requireFields":
@@ -97,7 +104,18 @@ const translations = {
     "toast.player.select": "Selecciona una gimcana per jugar.",
     "toast.player.noChallenges": "Aquesta gimcana encara no té reptes.",
     "toast.player.progressReset": "Progrés reiniciat.",
-    "toast.project.exportHtml": "Fitxer HTML descarregat."
+    "toast.project.exportHtml": "Fitxer HTML descarregat.",
+    "editor.markdownHelp.button": "Ajuda Markdown",
+    "editor.markdownHelp.title": "Ajuda de Markdown",
+    "editor.markdownHelp.content": "<p>Pots emprar Markdown en diversos camps. Sintaxi habitual:</p><ul><li><code>**negreta**</code> o <code>__negreta__</code> → <strong>negreta</strong></li><li><code>*cursiva*</code> o <code>_cursiva_</code> → <em>cursiva</em></li><li><code>~~ratllat~~</code> → <del>ratllat</del></li><li><code>`codi`</code> → <code>codi</code></li><li>Llista no ordenada: <code>- element</code> o <code>* element</code></li><li>Llista ordenada: <code>1. element</code></li><li>Enllaç: <code>[text](https://exemple.com)</code></li><li>Imatge: <code>![alt](https://ruta/imatge.png)</code></li></ul>",
+    "ui.progress.title": "Processant…",
+    "ui.progress.import": "Important…",
+    "ui.progress.export": "Exportant…",
+    "ui.progress.attach": "Afegint adjunts…",
+    "ui.progress.cancel": "Cancel·la",
+    "toast.operation.cancelled": "Operació cancel·lada",
+    "ui.fullscreen": "Pantalla completa",
+    "ui.fullscreen.exitHint": "Toca per eixir"
   },
   es: {
     "language.label": "Idioma",
@@ -129,9 +147,13 @@ const translations = {
     "creator.challenges.title": "Retos",
     "creator.challenges.exportJson": "Exportar JSON",
     "creator.challenges.exportHtml": "Exportar HTML",
+  "creator.challenges.exportZip": "Exportar ZIP",
     "creator.challenges.duplicate": "Duplicar",
     "creator.challenges.hint":
       "Ordena los retos según la secuencia deseada. Cada respuesta correcta desbloquea el siguiente.",
+    "creator.challenges.attach.desc": "Adjuntos para la descripción",
+    "creator.challenges.attach.hint": "Adjuntos para la pista",
+    "creator.challenges.attach.add": "Añadir archivos",
     "creator.challenges.new.legend": "Añadir nuevo reto",
     "creator.challenges.new.title.label": "Título del reto",
     "creator.challenges.new.title.placeholder": "Ej. Desafío de pistas",
@@ -147,9 +169,12 @@ const translations = {
     "creator.challenges.new.button": "Añadir reto",
     "creator.import.title": "Importar gincana",
     "creator.import.description":
-      "Si otra persona te comparte un JSON, pégalo aquí para añadirlo a tu colección.",
-    "creator.import.placeholder": '{"id":"...","title":"..."}',
+      "Selecciona un archivo ZIP para añadirlo a tu colección.",
+    "creator.import.file.label": "Archivo ZIP",
+    "creator.import.text.label": "",
+    "creator.import.placeholder": "",
     "creator.import.button": "Importar",
+    "editor.markdownHint": "Puedes usar Markdown (negritas, listas, enlaces...).",
     "creator.challenge.summary": "Reto {{index}}. {{title}}",
     "creator.challenge.untitled": "Reto sin título",
     "creator.project.defaultTitle": "Nueva gincana",
@@ -183,7 +208,7 @@ const translations = {
     "toast.project.requireChallenge": "Añade al menos un reto antes de exportar.",
     "toast.project.jsonCopied": "JSON copiado al portapapeles.",
     "toast.project.jsonFallback": "Copia manualmente el texto mostrado.",
-    "toast.project.import.empty": "Introduce un JSON válido para importar.",
+    "toast.project.import.empty": "Selecciona un archivo o pega un JSON válido para importar.",
     "toast.project.import.success": "Gincana importada correctamente.",
     "toast.project.import.error": "No se pudo importar el JSON proporcionado.",
     "toast.challenge.requireFields":
@@ -193,7 +218,18 @@ const translations = {
     "toast.player.select": "Selecciona una gincana para jugar.",
     "toast.player.noChallenges": "Esta gincana aún no tiene retos.",
     "toast.player.progressReset": "Progreso reiniciado.",
-    "toast.project.exportHtml": "Archivo HTML descargado."
+    "toast.project.exportHtml": "Archivo HTML descargado.",
+    "editor.markdownHelp.button": "Ayuda Markdown",
+    "editor.markdownHelp.title": "Ayuda de Markdown",
+    "editor.markdownHelp.content": "<p>Puedes usar Markdown en varios campos. Sintaxis común:</p><ul><li><code>**negrita**</code> o <code>__negrita__</code> → <strong>negrita</strong></li><li><code>*cursiva*</code> o <code>_cursiva_</code> → <em>cursiva</em></li><li><code>~~tachado~~</code> → <del>tachado</del></li><li><code>`codigo`</code> → <code>codigo</code></li><li>Lista no ordenada: <code>- elemento</code> o <code>* elemento</code></li><li>Lista ordenada: <code>1. elemento</code></li><li>Enlace: <code>[texto](https://ejemplo.com)</code></li><li>Imagen: <code>![alt](https://ruta/imagen.png)</code></li></ul>",
+    "ui.progress.title": "Procesando…",
+    "ui.progress.import": "Importando…",
+    "ui.progress.export": "Exportando…",
+    "ui.progress.attach": "Añadiendo adjuntos…",
+    "ui.progress.cancel": "Cancelar",
+    "toast.operation.cancelled": "Operación cancelada",
+    "ui.fullscreen": "Pantalla completa",
+    "ui.fullscreen.exitHint": "Toca para salir"
   },
   en: {
     "language.label": "Language",
@@ -226,9 +262,13 @@ const translations = {
     "creator.challenges.title": "Challenges",
     "creator.challenges.exportJson": "Export JSON",
     "creator.challenges.exportHtml": "Export HTML",
+  "creator.challenges.exportZip": "Export ZIP",
     "creator.challenges.duplicate": "Duplicate",
     "creator.challenges.hint":
       "Order the challenges in the desired sequence. Each correct answer unlocks the next one.",
+    "creator.challenges.attach.desc": "Attachments for description",
+    "creator.challenges.attach.hint": "Attachments for hint",
+    "creator.challenges.attach.add": "Add files",
     "creator.challenges.new.legend": "Add new challenge",
     "creator.challenges.new.title.label": "Challenge title",
     "creator.challenges.new.title.placeholder": "e.g. Clue challenge",
@@ -244,9 +284,12 @@ const translations = {
     "creator.challenges.new.button": "Add challenge",
     "creator.import.title": "Import scavenger hunt",
     "creator.import.description":
-      "If someone shares a JSON with you, paste it here to add it to your local collection.",
-    "creator.import.placeholder": '{"id":"...","title":"..."}',
+      "Select a ZIP file to add it to your collection.",
+    "creator.import.file.label": "ZIP file",
+    "creator.import.text.label": "",
+    "creator.import.placeholder": "",
     "creator.import.button": "Import",
+    "editor.markdownHint": "You can use Markdown (bold, lists, links...).",
     "creator.challenge.summary": "Challenge {{index}}. {{title}}",
     "creator.challenge.untitled": "Untitled challenge",
     "creator.project.defaultTitle": "New scavenger hunt",
@@ -280,7 +323,7 @@ const translations = {
     "toast.project.requireChallenge": "Add at least one challenge before exporting.",
     "toast.project.jsonCopied": "JSON copied to clipboard.",
     "toast.project.jsonFallback": "Copy the displayed text manually.",
-    "toast.project.import.empty": "Provide a valid JSON to import.",
+    "toast.project.import.empty": "Select a file or paste a valid JSON to import.",
     "toast.project.import.success": "Scavenger hunt imported successfully.",
     "toast.project.import.error": "The provided JSON could not be imported.",
     "toast.challenge.requireFields": "Add at least a title and an answer for the challenge.",
@@ -289,7 +332,18 @@ const translations = {
     "toast.player.select": "Select a scavenger hunt to play.",
     "toast.player.noChallenges": "This scavenger hunt has no challenges yet.",
     "toast.player.progressReset": "Progress reset.",
-    "toast.project.exportHtml": "HTML file downloaded."
+    "toast.project.exportHtml": "HTML file downloaded.",
+    "editor.markdownHelp.button": "Markdown help",
+    "editor.markdownHelp.title": "Markdown help",
+    "editor.markdownHelp.content": "<p>You can use Markdown in several fields. Common syntax:</p><ul><li><code>**bold**</code> or <code>__bold__</code> → <strong>bold</strong></li><li><code>*italic*</code> or <code>_italic_</code> → <em>italic</em></li><li><code>~~strikethrough~~</code> → <del>strikethrough</del></li><li><code>`code`</code> → <code>code</code></li><li>Unordered list: <code>- item</code> or <code>* item</code></li><li>Ordered list: <code>1. item</code></li><li>Link: <code>[label](https://example.com)</code></li><li>Image: <code>![alt](https://path/image.png)</code></li></ul>",
+    "ui.progress.title": "Processing…",
+    "ui.progress.import": "Importing…",
+    "ui.progress.export": "Exporting…",
+    "ui.progress.attach": "Adding attachments…",
+    "ui.progress.cancel": "Cancel",
+    "toast.operation.cancelled": "Operation cancelled",
+    "ui.fullscreen": "Fullscreen",
+    "ui.fullscreen.exitHint": "Tap to exit"
   }
 };
 
@@ -297,6 +351,222 @@ const elements = {};
 let currentLanguage = loadLanguage();
 let projects = loadProjects();
 let activeProjectId = projects[0]?.id ?? null;
+
+// IndexedDB (para adjuntos)
+let idbPromise = null;
+let progressCancelled = false;
+function initIndexedDB() {
+  if (!('indexedDB' in window)) return null;
+  if (idbPromise) return idbPromise;
+  idbPromise = new Promise((resolve, reject) => {
+    const request = indexedDB.open('EduGincanaDB', 1);
+    request.onupgradeneeded = (event) => {
+      const db = request.result;
+      if (!db.objectStoreNames.contains('attachments')) {
+        db.createObjectStore('attachments', { keyPath: 'id' });
+      }
+    };
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error);
+  });
+  return idbPromise;
+}
+
+async function idbPutAttachment(record) {
+  const db = await initIndexedDB();
+  if (!db) return;
+  await new Promise((resolve, reject) => {
+    const tx = db.transaction('attachments', 'readwrite');
+    tx.oncomplete = () => resolve();
+    tx.onerror = () => reject(tx.error);
+    const store = tx.objectStore('attachments');
+    store.put(record);
+  });
+}
+
+async function idbGetAttachment(id) {
+  const db = await initIndexedDB();
+  if (!db) return null;
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction('attachments', 'readonly');
+    tx.onerror = () => reject(tx.error);
+    const store = tx.objectStore('attachments');
+    const req = store.get(id);
+    req.onsuccess = () => resolve(req.result || null);
+    req.onerror = () => reject(req.error);
+  });
+}
+
+async function idbDeleteAttachment(id) {
+  const db = await initIndexedDB();
+  if (!db) return;
+  await new Promise((resolve, reject) => {
+    const tx = db.transaction('attachments', 'readwrite');
+    tx.oncomplete = () => resolve();
+    tx.onerror = () => reject(tx.error);
+    tx.objectStore('attachments').delete(id);
+  });
+}
+
+async function idbRefDelta(id, delta) {
+  const db = await initIndexedDB();
+  if (!db) return;
+  await new Promise((resolve, reject) => {
+    const tx = db.transaction('attachments', 'readwrite');
+    const store = tx.objectStore('attachments');
+    const req = store.get(id);
+    req.onsuccess = () => {
+      const rec = req.result;
+      if (!rec) { resolve(); return; }
+      const next = Math.max(0, (rec.refCount || 0) + (delta || 0));
+      if (next <= 0) {
+        store.delete(id);
+      } else {
+        rec.refCount = next;
+        store.put(rec);
+      }
+    };
+    req.onerror = () => reject(req.error);
+    tx.oncomplete = () => resolve();
+    tx.onerror = () => reject(tx.error);
+  });
+}
+
+async function idbEnsureAttachment({ id, name, mimeType, blob }) {
+  const db = await initIndexedDB();
+  if (!db) {
+    // sin IndexedDB, no podemos "asegurar"
+    return { id, name, mimeType };
+  }
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction('attachments', 'readwrite');
+    const store = tx.objectStore('attachments');
+    const req = store.get(id);
+    req.onsuccess = () => {
+      const existing = req.result;
+      const finalize = (finalId, rec) => {
+        store.put(rec);
+        resolve({ id: finalId, name: rec.name, mimeType: rec.mimeType });
+      };
+      if (existing) {
+        // si viene blob y difiere en tipo/tamaño, creamos nuevo id
+        if (blob && (existing.mimeType !== (mimeType || blob.type) || (existing.blob?.size !== blob.size))) {
+          const newId = generateId();
+          finalize(newId, { id: newId, name: name || existing.name, mimeType: mimeType || blob.type || existing.mimeType, blob, refCount: 1 });
+        } else {
+          existing.refCount = (existing.refCount || 0) + 1;
+          if (name) existing.name = name;
+          if (mimeType) existing.mimeType = mimeType;
+          store.put(existing);
+          resolve({ id, name: existing.name, mimeType: existing.mimeType });
+        }
+      } else {
+        const rec = { id, name: name || 'file', mimeType: mimeType || blob?.type || 'application/octet-stream', blob, refCount: 1 };
+        finalize(id, rec);
+      }
+    };
+    req.onerror = () => reject(req.error);
+  });
+}
+
+function dataUrlToBlob(dataUrl) {
+  try {
+    const match = /^data:([^;]*);base64,(.*)$/i.exec(dataUrl || '');
+    if (!match) return null;
+    const mime = match[1] || 'application/octet-stream';
+    const binary = atob(match[2] || '');
+    const len = binary.length;
+    const bytes = new Uint8Array(len);
+    for (let i = 0; i < len; i++) bytes[i] = binary.charCodeAt(i);
+    return new Blob([bytes], { type: mime });
+  } catch {
+    return null;
+  }
+}
+
+function revokeObjectUrls(container) {
+  if (!container) return;
+  container
+    .querySelectorAll('a[data-object-url], img[data-object-url], video[data-object-url], audio[data-object-url]')
+    .forEach((el) => {
+      const url = el.dataset.objectUrl;
+      if (url) {
+        try { URL.revokeObjectURL(url); } catch {}
+      }
+    });
+}
+
+function enterFullscreen(el) {
+  if (!el) return false;
+  try {
+    if (el.requestFullscreen) { el.requestFullscreen(); return true; }
+    if (el.webkitRequestFullscreen) { el.webkitRequestFullscreen(); return true; }
+    // iOS Safari específico para video
+    if (typeof el.webkitEnterFullscreen === 'function') { el.webkitEnterFullscreen(); return true; }
+    if (el.msRequestFullscreen) { el.msRequestFullscreen(); return true; }
+  } catch {}
+  return false;
+}
+
+function showFullscreenExitHint() {
+  try {
+    const id = 'fs-exit-hint';
+    const prev = document.getElementById(id);
+    if (prev) prev.remove();
+    const hint = document.createElement('div');
+    hint.id = id;
+    hint.textContent = t('ui.fullscreen.exitHint');
+    hint.setAttribute('role', 'status');
+    hint.style.position = 'fixed';
+    hint.style.top = '12px';
+    hint.style.left = '50%';
+    hint.style.transform = 'translateX(-50%)';
+    hint.style.padding = '6px 10px';
+    hint.style.borderRadius = '12px';
+    hint.style.background = 'rgba(0,0,0,0.6)';
+    hint.style.color = '#fff';
+    hint.style.fontSize = '0.95rem';
+    hint.style.zIndex = '2147483647';
+    hint.style.pointerEvents = 'none';
+    hint.style.boxShadow = '0 2px 8px rgba(0,0,0,0.3)';
+    document.body.appendChild(hint);
+    setTimeout(() => { try { hint.remove(); } catch {} }, 2200);
+  } catch {}
+}
+
+async function blobToBase64(blob) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const res = String(reader.result || '');
+      const comma = res.indexOf(',');
+      resolve(comma >= 0 ? res.slice(comma + 1) : res);
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+  });
+}
+
+// Barra de progreso global
+function showProgress(title = t('ui.progress.title')) {
+  if (!elements.progressOverlay) return;
+  progressCancelled = false;
+  elements.progressTitle.textContent = title || '';
+  elements.progressBar.style.width = '0%';
+  elements.progressText.textContent = '0%';
+  elements.progressOverlay.classList.remove('hidden');
+}
+function updateProgress(percent, text) {
+  if (!elements.progressOverlay) return;
+  const p = Math.max(0, Math.min(100, Math.round(percent)));
+  elements.progressBar.style.width = p + '%';
+  elements.progressText.textContent = text || (p + '%');
+}
+function hideProgress() {
+  if (!elements.progressOverlay) return;
+  elements.progressOverlay.classList.add('hidden');
+}
+function isCancelled() { return progressCancelled; }
 
 function loadLanguage() {
   try {
@@ -422,12 +692,16 @@ document.addEventListener("DOMContentLoaded", () => {
   setupModeSwitch();
   bindCreatorEvents();
   bindPlayerEvents();
+  bindMarkdownHelpEvents();
+  initIndexedDB();
   ensureActiveProject();
   renderSelectors();
   renderProjectForm();
   applyTranslations();
   bindAutofocus();
   registerServiceWorker();
+  // Migración en background de adjuntos antiguos con dataUrl
+  setTimeout(() => migrateAllProjectsAttachments().catch(console.warn), 0);
 });
 
 function cacheElements() {
@@ -438,10 +712,10 @@ function cacheElements() {
   elements.playerProjectSelector = document.getElementById("player-project-selector");
   elements.newProjectBtn = document.getElementById("new-project");
   elements.duplicateProjectBtn = document.getElementById("duplicate-project");
-  elements.exportProjectBtn = document.getElementById("export-project");
-  elements.exportHtmlBtn = document.getElementById("export-html");
+  elements.exportZipBtn = document.getElementById("export-zip");
   elements.importBtn = document.getElementById("import-project");
-  elements.importArea = document.getElementById("import-area");
+  elements.importFile = document.getElementById("import-file");
+  elements.importArea = null;
   elements.toast = document.querySelector(".toast");
   elements.projectForm = document.getElementById("project-form");
   elements.projectTitle = document.getElementById("project-title");
@@ -471,8 +745,27 @@ function cacheElements() {
   elements.challengeActions = document.querySelector(".challenge-actions");
   elements.challengeHintButton = document.getElementById("challenge-hint-button");
   elements.challengeHintText = document.getElementById("challenge-hint-text");
+  elements.challengeDescAttachments = document.getElementById("challenge-description-attachments");
+  elements.challengeHintAttachments = document.getElementById("challenge-hint-attachments");
   elements.rewardView = document.getElementById("reward-view");
   elements.rewardMessage = document.getElementById("reward-message");
+  // Markdown help modal
+  elements.markdownHelpOpen = document.getElementById("markdown-help-open");
+  elements.markdownHelp = document.getElementById("markdown-help");
+  elements.markdownHelpClose = document.getElementById("markdown-help-close");
+  // Progreso
+  elements.progressOverlay = document.getElementById('progress-overlay');
+  elements.progressBar = document.getElementById('progress-bar');
+  elements.progressText = document.getElementById('progress-text');
+  elements.progressTitle = document.getElementById('progress-title');
+  elements.progressCancel = document.getElementById('progress-cancel');
+  if (elements.progressCancel) {
+    elements.progressCancel.addEventListener('click', () => {
+      progressCancelled = true;
+      hideProgress();
+      showToast(t('toast.operation.cancelled'));
+    });
+  }
 }
 
 function setupModeSwitch() {
@@ -486,6 +779,24 @@ function setupModeSwitch() {
         panel.classList.toggle("active", panel.id === target);
       });
     });
+  });
+}
+
+function bindMarkdownHelpEvents() {
+  const modal = elements.markdownHelp;
+  const openBtn = elements.markdownHelpOpen;
+  const closeBtn = elements.markdownHelpClose;
+  if (!modal || !openBtn || !closeBtn) return;
+  const backdrop = modal.querySelector('.modal-backdrop');
+  const open = () => { modal.classList.remove('hidden'); closeBtn.focus(); };
+  const close = () => { modal.classList.add('hidden'); openBtn.focus(); };
+  openBtn.addEventListener('click', open);
+  closeBtn.addEventListener('click', close);
+  if (backdrop) backdrop.addEventListener('click', close);
+  document.addEventListener('keydown', (e) => {
+    if (!modal.classList.contains('hidden') && e.key === 'Escape') {
+      close();
+    }
   });
 }
 
@@ -519,6 +830,8 @@ function bindCreatorEvents() {
     copy.updatedAt = copy.createdAt;
     projects.push(copy);
     activeProjectId = copy.id;
+    // Aumentar refCount por todas las referencias de adjuntos existentes
+    bumpRefsForProject(copy).catch(console.warn);
     persistProjects();
     renderSelectors();
     renderProjectForm();
@@ -526,25 +839,8 @@ function bindCreatorEvents() {
     showToast(t("toast.project.duplicated"));
   });
 
-  elements.exportProjectBtn.addEventListener("click", async () => {
-    const project = getActiveProject();
-    if (!project) {
-      showToast(t("toast.project.none"), { error: true });
-      return;
-    }
-    const payload = JSON.stringify(prepareProjectForExport(project), null, 2);
-    try {
-      await navigator.clipboard.writeText(payload);
-      showToast(t("toast.project.jsonCopied"));
-    } catch {
-      elements.importArea.value = payload;
-      elements.importArea.select();
-      showToast(t("toast.project.jsonFallback"), { error: true });
-    }
-  });
-
-  if (elements.exportHtmlBtn) {
-    elements.exportHtmlBtn.addEventListener("click", () => {
+  if (elements.exportZipBtn) {
+    elements.exportZipBtn.addEventListener("click", async () => {
       const project = getActiveProject();
       if (!project) {
         showToast(t("toast.project.none"), { error: true });
@@ -554,40 +850,85 @@ function bindCreatorEvents() {
         showToast(t("toast.project.requireChallenge"), { error: true });
         return;
       }
-      const filename = `${slugify(project.title || "gincana")}.html`;
-      const html = buildStandaloneHtml(prepareProjectForExport(project));
-      downloadFile(filename, html, "text/html");
-      showToast(t("toast.project.exportHtml"));
+      try {
+        showProgress(t('ui.progress.export'));
+        const { filename, blob } = await buildZipForProject(prepareProjectForExport(project));
+        if (isCancelled()) throw new Error('CANCELLED');
+        downloadFile(filename, blob, "application/zip");
+        hideProgress();
+        showToast(t("toast.project.exportHtml"));
+      } catch (e) {
+        console.error(e);
+        hideProgress();
+        if (!(e && String(e.message).includes('CANCELLED'))) {
+          showToast(t("toast.project.none"), { error: true });
+        }
+      }
     });
   }
 
-  elements.importBtn.addEventListener("click", () => {
-    const raw = elements.importArea.value.trim();
-    if (!raw) {
-      showToast(t("toast.project.import.empty"), { error: true });
-      return;
-    }
+  elements.importBtn.addEventListener("click", async () => {
     try {
-      const data = JSON.parse(raw);
-      validateProject(data);
-      const normalized = normalizeProject(data);
-      const existing = projects.find((p) => p.id === normalized.id);
-      const project = existing ? { ...normalized, id: generateId() } : normalized;
-      project.createdAt = project.createdAt ?? new Date().toISOString();
-      project.updatedAt = new Date().toISOString();
-      projects.push(project);
-      activeProjectId = project.id;
-      elements.importArea.value = "";
-      persistProjects();
-      renderSelectors();
-      renderProjectForm();
-      applyTranslations();
+      const file = elements.importFile?.files?.[0];
+      if (!file) {
+        showToast(t("toast.project.import.empty"), { error: true });
+        return;
+      }
+      if (file.name.toLowerCase().endsWith(".zip")) {
+        await importProjectFromZip(file);
+      } else {
+        const raw = (await file.text()).trim();
+        importProjectFromRaw(raw);
+      }
+      if (elements.importFile) elements.importFile.value = "";
       showToast(t("toast.project.import.success"));
     } catch (error) {
       console.error(error);
+      if (elements.importFile) elements.importFile.value = "";
       showToast(t("toast.project.import.error"), { error: true });
     }
   });
+
+function importProjectFromRaw(raw) {
+  const data = JSON.parse(raw);
+  validateProject(data);
+  const normalized = normalizeProject(data);
+  // Migrar adjuntos con dataUrl a IndexedDB
+  (async () => {
+    try {
+      await initIndexedDB();
+      let mutated = false;
+      for (const ch of normalized.challenges) {
+        for (const key of ['descriptionAttachments', 'hintAttachments']) {
+          const list = ch[key] || [];
+          for (let i = 0; i < list.length; i++) {
+            const att = list[i];
+            if (att && att.dataUrl) {
+              const blob = dataUrlToBlob(att.dataUrl);
+              if (blob) {
+                const ensured = await idbEnsureAttachment({ id: att.id, name: att.name, mimeType: att.mimeType || blob.type || 'application/octet-stream', blob });
+                list[i] = { id: ensured.id, name: ensured.name, mimeType: ensured.mimeType };
+                mutated = true;
+              }
+            }
+          }
+        }
+      }
+      if (mutated) persistProjects();
+    } catch {}
+  })();
+  const existing = projects.find((project) => project.id === normalized.id);
+  const project = existing ? { ...normalized, id: generateId() } : normalized;
+  project.createdAt = project.createdAt ?? new Date().toISOString();
+  project.updatedAt = new Date().toISOString();
+  projects.push(project);
+  activeProjectId = project.id;
+  persistProjects();
+  renderSelectors();
+  renderProjectForm();
+  applyTranslations();
+  return project;
+}
 
   elements.projectTitle.addEventListener("input", handleProjectField("title"));
   elements.projectAuthor.addEventListener("input", handleProjectField("author"));
@@ -613,6 +954,9 @@ function bindCreatorEvents() {
       answer,
       successMessage,
       hint,
+      collapsed: false,
+      descriptionAttachments: [],
+      hintAttachments: [],
     });
     project.updatedAt = new Date().toISOString();
     persistProjects();
@@ -625,6 +969,21 @@ function bindCreatorEvents() {
     const displayTitle = title || t("creator.challenge.untitled");
     showToast(t("toast.challenge.added", { title: displayTitle }));
   });
+}
+
+async function bumpRefsForProject(project) {
+  try {
+    await initIndexedDB();
+  } catch { return; }
+  for (const ch of project.challenges || []) {
+    for (const key of ['descriptionAttachments', 'hintAttachments']) {
+      for (const att of (ch[key] || [])) {
+        if (att && att.id) {
+          await idbRefDelta(att.id, 1).catch(() => {});
+        }
+      }
+    }
+  }
 }
 
 function bindPlayerEvents() {
@@ -661,8 +1020,15 @@ function bindPlayerEvents() {
         showFeedback(t("player.feedback.noHint"), true);
         return;
       }
-      elements.challengeHintText.textContent = hint;
+      renderMarkdown(elements.challengeHintText, hint);
       elements.challengeHintButton.disabled = true;
+      const project = getPlayerProject();
+      if (project && elements.challengeHintAttachments) {
+        const idx = Number(elements.challengeHintButton.dataset.index || 0);
+        const ch = project.challenges[idx];
+        renderAttachmentLinks(elements.challengeHintAttachments, ch?.hintAttachments || []);
+        elements.challengeHintAttachments.classList.remove("hidden");
+      }
     });
   }
 
@@ -784,6 +1150,11 @@ function renderChallenges(project) {
   project.challenges.forEach((challenge, index) => {
     const node = elements.challengeTemplate.content.firstElementChild.cloneNode(true);
     node.dataset.index = index;
+    // aplicar estado plegado
+    const detailsEl = node.querySelector('details');
+    if (detailsEl) {
+      detailsEl.open = !Boolean(challenge.collapsed);
+    }
     const summaryLabel = node.querySelector(".challenge-name");
     const displayTitle = challenge.title || t("creator.challenge.untitled");
     summaryLabel.textContent = t("creator.challenge.summary", {
@@ -794,13 +1165,21 @@ function renderChallenges(project) {
     const controlButtons = node.querySelectorAll(".challenge-controls button");
     controlButtons.forEach((button) => {
       button.addEventListener("click", () => handleChallengeAction(project, index, button.dataset.action));
+      // actualizar icono para toggle según estado
+      if (button.dataset.action === 'toggle') {
+        button.textContent = (detailsEl && detailsEl.open) ? '▾' : '▸';
+      }
     });
 
     const titleInput = node.querySelector('input[data-field="title"]');
     const descriptionInput = node.querySelector('textarea[data-field="description"]');
     const answerInput = node.querySelector('input[data-field="answer"]');
-    const successInput = node.querySelector('input[data-field="successMessage"]');
+  const successInput = node.querySelector('input[data-field="successMessage"]');
     const hintInput = node.querySelector('textarea[data-field="hint"]');
+  const descAttachInput = node.querySelector('input[data-attach="description"]');
+  const hintAttachInput = node.querySelector('input[data-attach="hint"]');
+  const descAttachList = node.querySelector('[data-attach-list="description"]');
+  const hintAttachList = node.querySelector('[data-attach-list="hint"]');
 
     titleInput.value = challenge.title || "";
     descriptionInput.value = challenge.description || "";
@@ -814,9 +1193,184 @@ function renderChallenges(project) {
     successInput.addEventListener("input", handleChallengeField(project, index, "successMessage"));
     hintInput.addEventListener("input", handleChallengeField(project, index, "hint"));
 
+    if (descAttachInput) {
+      descAttachInput.addEventListener("change", async (e) => {
+        const files = Array.from(e.target.files || []);
+        if (!files.length) return;
+        showProgress(t('ui.progress.attach'));
+        for (let i = 0; i < files.length; i++) {
+          if (isCancelled()) break;
+          await addAttachmentToChallenge(project, index, "descriptionAttachments", files[i]);
+          updateProgress(((i + 1) / files.length) * 100, `(${i+1}/${files.length}) ${files[i].name || ''}`);
+        }
+        hideProgress();
+        persistProjects();
+        renderChallenges(project);
+      });
+    }
+    if (hintAttachInput) {
+      hintAttachInput.addEventListener("change", async (e) => {
+        const files = Array.from(e.target.files || []);
+        if (!files.length) return;
+        showProgress(t('ui.progress.attach'));
+        for (let i = 0; i < files.length; i++) {
+          if (isCancelled()) break;
+          await addAttachmentToChallenge(project, index, "hintAttachments", files[i]);
+          updateProgress(((i + 1) / files.length) * 100, `(${i+1}/${files.length}) ${files[i].name || ''}`);
+        }
+        hideProgress();
+        persistProjects();
+        renderChallenges(project);
+      });
+    }
+
+    renderAttachmentList(descAttachList, challenge.descriptionAttachments, () => {
+      renderChallenges(project);
+    }, (attId) => {
+      removeAttachment(project, index, "descriptionAttachments", attId);
+      persistProjects();
+      renderChallenges(project);
+    });
+    renderAttachmentList(hintAttachList, challenge.hintAttachments, () => {
+      renderChallenges(project);
+    }, (attId) => {
+      removeAttachment(project, index, "hintAttachments", attId);
+      persistProjects();
+      renderChallenges(project);
+    });
+
     elements.challengeList.appendChild(node);
   });
   applyTranslationsTo(elements.challengeList);
+}
+
+async function addAttachmentToChallenge(project, index, key, file) {
+  const db = await initIndexedDB();
+  const id = generateId();
+  // Asegurar estructura de arrays de adjuntos
+  if (!Array.isArray(project.challenges[index][key])) {
+    project.challenges[index][key] = [];
+  }
+  if (db) {
+    const blob = file instanceof Blob ? file : new Blob([file], { type: file?.type || 'application/octet-stream' });
+    const ensured = await idbEnsureAttachment({ id, name: file.name || 'file', mimeType: file.type || 'application/octet-stream', blob });
+    const att = { id: ensured.id, name: ensured.name, mimeType: ensured.mimeType };
+    project.challenges[index][key].push(att);
+  } else {
+    // Fallback a dataUrl si IndexedDB no está disponible
+    const dataUrl = await readFileAsDataUrl(file);
+    const att = safeAttachment({ id, name: file.name, mimeType: file.type || 'application/octet-stream', dataUrl });
+    project.challenges[index][key].push(att);
+  }
+  project.updatedAt = new Date().toISOString();
+}
+
+function removeAttachment(project, index, key, attId) {
+  const list = project.challenges[index][key] || [];
+  project.challenges[index][key] = list.filter((a) => a.id !== attId);
+  project.updatedAt = new Date().toISOString();
+  // Decrementar refCount de IndexedDB
+  idbRefDelta(attId, -1).catch(() => {});
+}
+
+function detectKind(att) {
+  const mime = (att?.mimeType || '').toLowerCase();
+  const name = (att?.name || '').toLowerCase();
+  const byExt = (exts) => exts.some((e) => name.endsWith(e));
+  if (mime.startsWith('image/') || byExt(['.png','.jpg','.jpeg','.gif','.webp','.bmp','.svg'])) return 'image';
+  if (mime.startsWith('audio/') || byExt(['.mp3','.wav','.ogg','.m4a','.aac','.flac'])) return 'audio';
+  if (mime.startsWith('video/') || byExt(['.mp4','.webm','.ogg','.mov','.m4v'])) return 'video';
+  return 'other';
+}
+
+async function renderAttachmentList(container, attachments, onChange, onRemove) {
+  if (!container) return;
+  revokeObjectUrls(container);
+  container.innerHTML = "";
+  for (const att of (attachments || [])) {
+    const li = document.createElement("li");
+    li.className = 'attachment-item';
+    const kind = detectKind(att);
+    let href = "#";
+    if (att.dataUrl) {
+      href = att.dataUrl;
+    } else if (att.path) {
+      href = att.path;
+    } else if (att.id) {
+      try {
+        const rec = await idbGetAttachment(att.id);
+        if (rec && rec.blob) {
+          href = URL.createObjectURL(rec.blob);
+          // marcaremos el elemento de preview más abajo
+        }
+      } catch {}
+    }
+    // preview según tipo
+    let previewEl = null;
+    if (kind === 'image') {
+      const img = document.createElement('img');
+      img.src = href;
+      img.alt = att.name || '';
+      if (!att.path && !att.dataUrl) img.dataset.objectUrl = href;
+      img.className = 'preview';
+      previewEl = img; li.append(img);
+    } else if (kind === 'audio') {
+      const audio = document.createElement('audio');
+      audio.controls = true;
+      audio.src = href;
+      if (!att.path && !att.dataUrl) audio.dataset.objectUrl = href;
+      previewEl = audio; li.append(audio);
+    } else if (kind === 'video') {
+      const video = document.createElement('video');
+      video.controls = true;
+      video.src = href;
+      if (!att.path && !att.dataUrl) video.dataset.objectUrl = href;
+      video.className = 'preview';
+      previewEl = video; li.append(video);
+    }
+    // fullscreen con clic directo solo para imágenes; para vídeo usamos el control nativo
+    if (previewEl && kind === 'image') {
+      previewEl.style.cursor = 'zoom-in';
+      previewEl.addEventListener('click', () => {
+        try {
+          if (document.fullscreenElement) {
+            document.exitFullscreen().catch(() => {});
+          } else {
+            if (enterFullscreen(previewEl)) {
+              showFullscreenExitHint();
+            } else if (href && href !== '#') {
+              window.open(href, '_blank');
+            }
+          }
+        } catch (e) {
+          if (href && href !== '#') window.open(href, '_blank');
+        }
+      });
+    }
+    // enlace para descargar/abrir y nombre
+    const a = document.createElement('a');
+    a.textContent = att.name || 'attachment';
+    a.href = href;
+    a.download = att.name || 'attachment';
+    if (!att.path && !att.dataUrl) a.dataset.objectUrl = href;
+    li.append(a);
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "remove-attachment";
+    btn.textContent = "✕";
+    btn.addEventListener("click", () => onRemove(att.id));
+    li.append(btn);
+    container.append(li);
+  }
+}
+
+function readFileAsDataUrl(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
 }
 
 function handleProjectField(field) {
@@ -845,8 +1399,22 @@ function handleChallengeField(project, index, field) {
 }
 
 function handleChallengeAction(project, index, action) {
+  if (action === 'toggle') {
+    const ch = project.challenges[index];
+    ch.collapsed = !Boolean(ch.collapsed);
+    project.updatedAt = new Date().toISOString();
+    persistProjects();
+    renderChallenges(project);
+    return;
+  }
   if (action === "delete") {
     const [removed] = project.challenges.splice(index, 1);
+    // Decrementar refCount por todos los adjuntos del reto eliminado
+    if (removed) {
+      const desc = removed.descriptionAttachments || [];
+      const hint = removed.hintAttachments || [];
+      [...desc, ...hint].forEach((att) => att?.id && idbRefDelta(att.id, -1).catch(() => {}));
+    }
     project.updatedAt = new Date().toISOString();
     persistProjects();
     renderChallenges(project);
@@ -887,8 +1455,8 @@ function showPlayerView(project, progress) {
   }
   metaParts.push(t("player.meta.challenges", { count: total }));
   elements.playerMeta.textContent = metaParts.filter(Boolean).join(" · ");
-  elements.playerStory.textContent = project.story || "";
-  if (!project.story) {
+  renderMarkdown(elements.playerStory, project.story || "");
+  if (!project.story || !project.story.trim()) {
     elements.playerStory.classList.add("hidden");
   } else {
     elements.playerStory.classList.remove("hidden");
@@ -933,8 +1501,11 @@ function renderCurrentChallenge(project, progress) {
     total,
     title,
   });
-  elements.challengeDescription.textContent =
-    challenge.description || t("player.challenge.defaultDescription");
+  renderMarkdown(
+    elements.challengeDescription,
+    challenge.description || t("player.challenge.defaultDescription")
+  );
+  renderAttachmentLinks(elements.challengeDescAttachments, challenge.descriptionAttachments);
   elements.challengeFeedback.textContent = "";
   elements.challengeFeedback.classList.remove("error");
   elements.challengeAnswer.value = "";
@@ -949,11 +1520,20 @@ function renderCurrentChallenge(project, progress) {
       elements.challengeHintButton.dataset.hint = hintValue;
       elements.challengeHintButton.dataset.index = index;
       elements.challengeHintButton.textContent = t("player.challenge.hintButton");
+      if (elements.challengeHintAttachments) {
+        elements.challengeHintAttachments.innerHTML = "";
+        elements.challengeHintAttachments.classList.add("hidden");
+        elements.challengeHintAttachments.dataset.index = index;
+      }
     } else {
       elements.challengeActions.classList.add("hidden");
       elements.challengeHintText.textContent = "";
       elements.challengeHintButton.dataset.hint = "";
       elements.challengeHintButton.dataset.index = "";
+      if (elements.challengeHintAttachments) {
+        elements.challengeHintAttachments.innerHTML = "";
+        elements.challengeHintAttachments.dataset.index = "";
+      }
     }
   }
 }
@@ -961,9 +1541,12 @@ function renderCurrentChallenge(project, progress) {
 function renderReward(project) {
   elements.challengeView.classList.add("hidden");
   elements.rewardView.classList.remove("hidden");
-  elements.rewardMessage.textContent =
-    project.rewardMessage ||
-    t("player.reward.default");
+  renderMarkdown(
+    elements.rewardMessage,
+    (project.rewardMessage && project.rewardMessage.trim())
+      ? project.rewardMessage
+      : t("player.reward.default")
+  );
   if (elements.challengeActions) {
     elements.challengeActions.classList.add("hidden");
   }
@@ -978,8 +1561,90 @@ function renderReward(project) {
 }
 
 function showFeedback(message, isError) {
-  elements.challengeFeedback.textContent = message;
+  // Permitir Markdown en mensajes de feedback (p.e. successMessage)
+  renderMarkdown(elements.challengeFeedback, message || "");
   elements.challengeFeedback.classList.toggle("error", Boolean(isError));
+}
+
+async function renderAttachmentLinks(container, attachments) {
+  if (!container) return;
+  revokeObjectUrls(container);
+  container.innerHTML = "";
+  for (const att of (attachments || [])) {
+    const li = document.createElement("li");
+    li.className = 'attachment-item';
+    const kind = detectKind(att);
+    if (att.dataUrl) {
+      const href = att.dataUrl;
+      let previewEl = null;
+      if (kind === 'image') {
+        const img = document.createElement('img'); img.src = href; img.alt = att.name || ''; img.className = 'preview'; img.style.cursor = 'zoom-in';
+        img.addEventListener('click', function(){
+          try {
+            if (document.fullscreenElement) { document.exitFullscreen().catch(()=>{}); }
+            else if (enterFullscreen(img)) { showFullscreenExitHint(); }
+            else { window.open(href, '_blank'); }
+          } catch { window.open(href, '_blank'); }
+        });
+        previewEl = img; li.append(img);
+      } else if (kind === 'audio') {
+        const audio = document.createElement('audio'); audio.controls = true; audio.src = href; previewEl = audio; li.append(audio);
+      } else if (kind === 'video') {
+        const video = document.createElement('video'); video.controls = true; video.src = href; video.className = 'preview'; previewEl = video; li.append(video);
+      }
+      const a = document.createElement('a'); a.href = href; a.textContent = att.name || 'attachment'; a.download = att.name || 'attachment'; li.append(a);
+    } else if (att.path) {
+      const href = att.path;
+      let previewEl = null;
+      if (kind === 'image') {
+        const img = document.createElement('img'); img.src = href; img.alt = att.name || ''; img.className = 'preview'; img.style.cursor = 'zoom-in';
+        img.addEventListener('click', function(){
+          try {
+            if (document.fullscreenElement) { document.exitFullscreen().catch(()=>{}); }
+            else if (enterFullscreen(img)) { showFullscreenExitHint(); }
+            else { window.open(href, '_blank'); }
+          } catch { window.open(href, '_blank'); }
+        });
+        previewEl = img; li.append(img);
+      } else if (kind === 'audio') {
+        const audio = document.createElement('audio'); audio.controls = true; audio.src = href; previewEl = audio; li.append(audio);
+      } else if (kind === 'video') {
+        const video = document.createElement('video'); video.controls = true; video.src = href; video.className = 'preview'; previewEl = video; li.append(video);
+      }
+      const a = document.createElement('a'); a.href = href; a.textContent = att.name || 'attachment'; a.download = att.name || 'attachment'; li.append(a);
+    } else if (att.id) {
+      try {
+        const rec = await idbGetAttachment(att.id);
+        if (rec && rec.blob) {
+          const url = URL.createObjectURL(rec.blob);
+          let previewEl = null;
+          if (kind === 'image') {
+            const img = document.createElement('img'); img.src = url; img.alt = att.name || ''; img.className = 'preview'; img.dataset.objectUrl = url; img.style.cursor = 'zoom-in';
+            img.addEventListener('click', function(){
+              try {
+                if (document.fullscreenElement) { document.exitFullscreen().catch(()=>{}); }
+                else if (enterFullscreen(img)) { showFullscreenExitHint(); }
+                else { window.open(url, '_blank'); }
+              } catch { window.open(url, '_blank'); }
+            });
+            previewEl = img; li.append(img);
+          } else if (kind === 'audio') {
+            const audio = document.createElement('audio'); audio.controls = true; audio.src = url; audio.dataset.objectUrl = url; previewEl = audio; li.append(audio);
+          } else if (kind === 'video') {
+            const video = document.createElement('video'); video.controls = true; video.src = url; video.className = 'preview'; video.dataset.objectUrl = url; previewEl = video; li.append(video);
+          }
+          const a = document.createElement('a'); a.href = url; a.dataset.objectUrl = url; a.textContent = att.name || 'attachment'; a.download = att.name || 'attachment'; li.append(a);
+        } else {
+          const a = document.createElement('a'); a.href = '#'; a.textContent = att.name || 'attachment'; li.append(a);
+        }
+      } catch {
+        const a = document.createElement('a'); a.href = '#'; a.textContent = att.name || 'attachment'; li.append(a);
+      }
+    } else {
+      const a = document.createElement('a'); a.href = '#'; a.textContent = att.name || 'attachment'; li.append(a);
+    }
+    container.append(li);
+  }
 }
 
 function showToast(message, options = {}) {
@@ -1070,6 +1735,12 @@ function validateProject(candidate) {
       challenge.hint =
         challenge.hint === undefined || challenge.hint === null ? "" : String(challenge.hint);
     }
+    if (!Array.isArray(challenge.descriptionAttachments)) {
+      challenge.descriptionAttachments = [];
+    }
+    if (!Array.isArray(challenge.hintAttachments)) {
+      challenge.hintAttachments = [];
+    }
   });
 }
 
@@ -1158,10 +1829,59 @@ function normalizeProject(project) {
           : challenge.hint == null
           ? ""
           : String(challenge.hint),
+      collapsed: Boolean(challenge.collapsed),
+      descriptionAttachments: Array.isArray(challenge.descriptionAttachments)
+        ? challenge.descriptionAttachments.map(safeAttachment).filter(Boolean)
+        : [],
+      hintAttachments: Array.isArray(challenge.hintAttachments)
+        ? challenge.hintAttachments.map(safeAttachment).filter(Boolean)
+        : [],
     };
     return normalizedChallenge;
   });
   return project;
+}
+
+function safeAttachment(att) {
+  if (!att || typeof att !== "object") return null;
+  const id = att.id || generateId();
+  const name = typeof att.name === "string" ? att.name : "file";
+  const mimeType = typeof att.mimeType === "string" ? att.mimeType : "application/octet-stream";
+  const dataUrl = typeof att.dataUrl === "string" ? att.dataUrl : "";
+  const path = typeof att.path === "string" ? att.path : "";
+  return { id, name, mimeType, dataUrl, path };
+}
+
+// Migración: mover dataUrl a IndexedDB y limpiar campos pesados
+async function migrateAllProjectsAttachments() {
+  try {
+    await initIndexedDB();
+  } catch {
+    return; // IndexedDB no disponible
+  }
+  let mutated = false;
+  for (const project of projects) {
+    for (const ch of project.challenges || []) {
+      for (const listKey of ['descriptionAttachments', 'hintAttachments']) {
+        const list = ch[listKey] || [];
+        for (let i = 0; i < list.length; i++) {
+          const att = list[i];
+          if (att && att.dataUrl && !att.path) {
+            const blob = dataUrlToBlob(att.dataUrl);
+            if (blob) {
+              const ensured = await idbEnsureAttachment({ id: att.id, name: att.name, mimeType: att.mimeType, blob });
+              list[i] = { id: ensured.id, name: ensured.name, mimeType: ensured.mimeType };
+              mutated = true;
+            }
+          }
+        }
+      }
+    }
+  }
+  if (mutated) {
+    persistProjects();
+    renderProjectForm();
+  }
 }
 
 function prepareProjectForExport(project) {
@@ -1206,12 +1926,12 @@ function buildStandaloneHtml(project) {
     normalized.story && normalized.story.trim()
       ? `<section class="intro"><h2>${escapeHtml(
           translateForLang("player.intro.title", language)
-        )}</h2><p>${newlineToBr(escapeHtml(normalized.story))}</p></section>`
+        )}</h2>${markdownToHtml(normalized.story)}</section>`
       : "";
   const defaultReward = escapeHtml(translateForLang("player.reward.default", language));
   const rewardMessage =
     normalized.rewardMessage && normalized.rewardMessage.trim()
-      ? newlineToBr(escapeHtml(normalized.rewardMessage))
+      ? markdownToHtml(normalized.rewardMessage)
       : defaultReward;
   const sanitizedData = sanitizeForInlineScript(
     JSON.stringify({ ...normalized, language }, null, 2)
@@ -1232,7 +1952,9 @@ function buildStandaloneHtml(project) {
     progressReset: translateForLang("toast.player.progressReset", language),
     rewardDefault: translateForLang("player.reward.default", language),
     rewardTitle: translateForLang("player.reward.title", language),
-    answerPlaceholder: translateForLang("player.challenge.answer.placeholder", language)
+    answerPlaceholder: translateForLang("player.challenge.answer.placeholder", language),
+    fullscreenLabel: translateForLang("ui.fullscreen", language),
+    fullscreenExitHint: translateForLang("ui.fullscreen.exitHint", language)
   };
   const sanitizedTextBundle = sanitizeForInlineScript(JSON.stringify(textBundle, null, 2));
   const subtitle = escapeHtml(translateForLang("app.subtitle", language));
@@ -1514,6 +2236,7 @@ button:active {
     <section id="challenge-section" class="section">
       <h2 id="challenge-title"></h2>
       <p id="challenge-description"></p>
+      <ul id="challenge-description-attachments" class="attachment-list"></ul>
       <form id="challenge-form" autocomplete="off">
         <label for="challenge-answer">${answerLabel}</label>
         <input
@@ -1531,6 +2254,7 @@ button:active {
       <div id="hint-actions" class="hint-actions">
         <button type="button" id="hint-button" class="secondary">${hintButtonText}</button>
         <p id="hint-text" class="hint-text" role="status"></p>
+        <ul id="hint-attachments" class="attachment-list"></ul>
       </div>
       <p id="feedback" role="status"></p>
     </section>
@@ -1554,6 +2278,7 @@ const TEXT = ${sanitizedTextBundle};
   const rewardSection = document.getElementById("reward-section");
   const challengeTitle = document.getElementById("challenge-title");
   const challengeDescription = document.getElementById("challenge-description");
+  const challengeDescAttachments = document.getElementById("challenge-description-attachments");
   const progressLabel = document.getElementById("progress-label");
   const form = document.getElementById("challenge-form");
   const answerInput = document.getElementById("challenge-answer");
@@ -1563,6 +2288,7 @@ const TEXT = ${sanitizedTextBundle};
   const hintActions = document.getElementById("hint-actions");
   const hintButton = document.getElementById("hint-button");
   const hintText = document.getElementById("hint-text");
+  const hintAttachments = document.getElementById("hint-attachments");
   hintButton.textContent = TEXT.hintButton;
   answerInput.placeholder = TEXT.answerPlaceholder;
   let index = loadProgress();
@@ -1570,13 +2296,120 @@ const TEXT = ${sanitizedTextBundle};
 
   hintButton.dataset.hint = "";
 
+  function showHint(msg) {
+    try {
+      const id = 'fs-exit-hint';
+      const prev = document.getElementById(id);
+      if (prev) prev.remove();
+      const hint = document.createElement('div');
+      hint.id = id;
+      hint.textContent = msg || TEXT.fullscreenExitHint || 'Tap to exit';
+      hint.setAttribute('role','status');
+      hint.style.position = 'fixed';
+      hint.style.top = '12px';
+      hint.style.left = '50%';
+      hint.style.transform = 'translateX(-50%)';
+      hint.style.padding = '6px 10px';
+      hint.style.borderRadius = '12px';
+      hint.style.background = 'rgba(0,0,0,0.6)';
+      hint.style.color = '#fff';
+      hint.style.fontSize = '0.95rem';
+      hint.style.zIndex = '2147483647';
+      hint.style.pointerEvents = 'none';
+      hint.style.boxShadow = '0 2px 8px rgba(0,0,0,0.3)';
+      document.body.appendChild(hint);
+      setTimeout(function(){ try { hint.remove(); } catch(e){} }, 2200);
+    } catch (e) {}
+  }
+
+  // Markdown helpers (minimal, safe protocols only)
+  const MARKDOWN_SAFE_PROTOCOLS = /^(https?:|mailto:|tel:|sms:)/i;
+  function sanitizeUrl(rawUrl) {
+    if (!rawUrl) return null;
+    const url = rawUrl.trim();
+    if (!url) return null;
+    if (url.startsWith('#')) return url;
+    if (url.startsWith('/') || url.startsWith('./') || url.startsWith('../')) return url;
+    if (MARKDOWN_SAFE_PROTOCOLS.test(url)) return url;
+    return null;
+  }
+  function renderInlineMarkdown(text) {
+    if (!text) return "";
+    const escapeHtml = (v) => v
+      .toString()
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+    let escaped = escapeHtml(text);
+    const codeRepl = [];
+    // Evitar el carácter backtick sin escapar en la plantilla externa
+    const backtick = String.fromCharCode(96);
+    const codeRegex = new RegExp(backtick + '([^' + backtick + ']+)' + backtick, 'g');
+    escaped = escaped.replace(codeRegex, function(_, code) {
+      const ph = '__CODE_' + codeRepl.length + '__';
+      codeRepl.push('<code>' + code + '</code>');
+      return ph;
+    });
+    escaped = escaped.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (m, alt, url) => {
+      const safeUrl = sanitizeUrl(url);
+      if (!safeUrl) return alt;
+      return '<img src="' + safeUrl + '" alt="' + escapeHtml(alt) + '" loading="lazy" />';
+    });
+    escaped = escaped.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (m, label, url) => {
+      const safeUrl = sanitizeUrl(url);
+      const safeLabel = renderInlineMarkdown(label);
+      return safeUrl ? '<a href="' + safeUrl + '" target="_blank" rel="noopener noreferrer">' + safeLabel + '</a>' : safeLabel;
+    });
+    escaped = escaped.replace(/\*\*([^*\n]+)\*\*/g, "<strong>$1</strong>");
+    escaped = escaped.replace(/__([^_\n]+)__/g, "<strong>$1</strong>");
+    escaped = escaped.replace(/(\s|^)\*(?!\s)([^*\n]+?)\*(?=\s|$)/g, "$1<em>$2</em>");
+    escaped = escaped.replace(/(\s|^)_(?!\s)([^_\n]+?)_(?=\s|$)/g, "$1<em>$2</em>");
+    escaped = escaped.replace(/~~([^~\n]+)~~/g, "<del>$1</del>");
+    escaped = escaped.replace(/\r?\n/g, "<br>");
+    codeRepl.forEach(function(html, i) {
+      escaped = escaped.replace('__CODE_' + i + '__', html);
+    });
+    return escaped;
+  }
+  function markdownToHtml(markdown) {
+    if (!markdown) return "";
+    const normalized = markdown.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
+    const lines = normalized.split("\n");
+    const out = [];
+    let inUl = false, inOl = false;
+    let para = [];
+  const closeLists = function() { if (inUl) { out.push('</ul>'); inUl=false;} if (inOl){ out.push('</ol>'); inOl=false;} };
+  const flushP = function() { if (!para.length) return; out.push('<p>' + renderInlineMarkdown(para.join('\n')) + '</p>'); para=[]; };
+    for (const line of lines) {
+      const unordered = line.match(/^\s*([-*])\s+(.+)/);
+      const ordered = line.match(/^\s*\d+\.\s+(.+)/);
+      const heading = line.match(/^(#{1,6})\s+(.+)/);
+      const quote = line.match(/^\s*>\s+(.*)/);
+      const trimmed = line.trim();
+      if (!trimmed) { flushP(); closeLists(); continue; }
+      if (unordered) { flushP(); if (!inUl){ closeLists(); out.push('<ul>'); inUl=true;} out.push('<li>' + renderInlineMarkdown(unordered[2]) + '</li>'); continue; }
+      if (ordered) { flushP(); if (!inOl){ closeLists(); out.push('<ol>'); inOl=true;} out.push('<li>' + renderInlineMarkdown(ordered[1]) + '</li>'); continue; }
+      closeLists();
+      if (heading) { flushP(); const level = heading[1].length; out.push('<h' + level + '>' + renderInlineMarkdown(heading[2]) + '</h' + level + '>'); continue; }
+      if (quote) { flushP(); out.push('<blockquote>' + renderInlineMarkdown(quote[1]) + '</blockquote>'); continue; }
+      para.push(line);
+    }
+    flushP(); closeLists();
+    return out.join("");
+  }
+
   hintButton.addEventListener("click", () => {
     const hint = hintButton.dataset.hint;
     if (!hint) {
       showFeedback(TEXT.feedbackNoHint, true);
       return;
     }
-    hintText.textContent = hint;
+    hintText.innerHTML = markdownToHtml(hint);
+    if (hintAttachments) {
+      renderAttachmentLinks(hintAttachments, project.challenges[index].hintAttachments || []);
+    }
     hintButton.disabled = true;
   });
 
@@ -1641,11 +2474,17 @@ const TEXT = ${sanitizedTextBundle};
       total,
       title,
     });
-    challengeDescription.textContent =
-      current.description || TEXT.challengeDefaultDescription;
+    challengeDescription.innerHTML =
+      markdownToHtml(current.description || TEXT.challengeDefaultDescription);
+    if (challengeDescAttachments) {
+      renderAttachmentLinks(challengeDescAttachments, current.descriptionAttachments || []);
+    }
     answerInput.value = "";
     answerInput.focus();
     hintText.textContent = "";
+    if (hintAttachments) {
+      hintAttachments.innerHTML = "";
+    }
     const hintValue = current.hint && current.hint.trim();
     if (hintValue) {
       hintActions.classList.remove("hidden");
@@ -1660,9 +2499,55 @@ const TEXT = ${sanitizedTextBundle};
   }
 
   function showFeedback(message, isError) {
-    feedback.textContent = message;
+    feedback.innerHTML = message ? markdownToHtml(message) : "";
     feedback.classList.toggle("error", Boolean(isError));
     feedback.classList.toggle("success", !isError && Boolean(message));
+  }
+  function detectKind(att) {
+    var mime = (att && att.mimeType || '').toLowerCase();
+    var name = (att && att.name || '').toLowerCase();
+    function byExt(exts){ for (var i=0;i<exts.length;i++){ if (name.endsWith(exts[i])) return true; } return false; }
+    if (mime.indexOf('image/') === 0 || byExt(['.png','.jpg','.jpeg','.gif','.webp','.bmp','.svg'])) return 'image';
+    if (mime.indexOf('audio/') === 0 || byExt(['.mp3','.wav','.ogg','.m4a','.aac','.flac'])) return 'audio';
+    if (mime.indexOf('video/') === 0 || byExt(['.mp4','.webm','.ogg','.mov','.m4v'])) return 'video';
+    return 'other';
+  }
+  function renderAttachmentLinks(container, attachments) {
+    if (!container) return;
+    container.innerHTML = "";
+    (attachments || []).forEach(function(att){
+      var li = document.createElement('li');
+      li.className = 'attachment-item';
+      var kind = detectKind(att);
+      var href = att && (att.path || att.dataUrl) || '#';
+      var previewEl = null;
+      if (kind === 'image' && href !== '#') {
+        var img = document.createElement('img');
+        img.src = href; img.alt = att.name || ''; img.className = 'preview';
+        img.style.cursor = 'zoom-in';
+        img.addEventListener('click', function(){
+          try {
+            if (document.fullscreenElement) { document.exitFullscreen().catch(()=>{}); }
+            else if (img.requestFullscreen) { img.requestFullscreen(); showHint(TEXT.fullscreenExitHint); }
+            else if (img.webkitRequestFullscreen) { img.webkitRequestFullscreen(); showHint(TEXT.fullscreenExitHint); }
+            else if (img.msRequestFullscreen) { img.msRequestFullscreen(); showHint(TEXT.fullscreenExitHint); }
+            else { window.open(href, '_blank'); }
+          } catch (e) { window.open(href, '_blank'); }
+        });
+        previewEl = img; li.append(img);
+      } else if (kind === 'audio' && href !== '#') {
+        var audio = document.createElement('audio');
+        audio.controls = true; audio.src = href; previewEl = audio; li.append(audio);
+      } else if (kind === 'video' && href !== '#') {
+        var video = document.createElement('video');
+        video.controls = true; video.src = href; video.className = 'preview'; previewEl = video; li.append(video);
+      }
+      var a = document.createElement('a');
+      a.textContent = att.name || 'attachment';
+      a.href = href; a.download = att.name || 'attachment';
+      li.append(a);
+      container.append(li);
+    });
   }
 
   function loadProgress() {
@@ -1744,4 +2629,363 @@ function escapeHtml(value) {
 
 function newlineToBr(value) {
   return value.replace(/\r?\n/g, "<br>");
+}
+
+const MARKDOWN_SAFE_PROTOCOLS = /^(https?:|mailto:|tel:|sms:)/i;
+
+function renderMarkdown(target, markdown) {
+  if (!target) return "";
+  const html = markdownToHtml(typeof markdown === "string" ? markdown : "");
+  if (html) {
+    target.innerHTML = html;
+  } else {
+    target.textContent = "";
+  }
+  return html;
+}
+
+function markdownToHtml(markdown) {
+  if (!markdown) {
+    return "";
+  }
+  const normalized = markdown.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
+  const lines = normalized.split("\n");
+  const html = [];
+  let inUnorderedList = false;
+  let inOrderedList = false;
+  let paragraphBuffer = [];
+
+  const closeLists = () => {
+    if (inUnorderedList) {
+      html.push("</ul>");
+      inUnorderedList = false;
+    }
+    if (inOrderedList) {
+      html.push("</ol>");
+      inOrderedList = false;
+    }
+  };
+
+  const flushParagraph = () => {
+    if (!paragraphBuffer.length) return;
+    const content = paragraphBuffer.join("\n");
+    html.push(`<p>${renderInlineMarkdown(content)}</p>`);
+    paragraphBuffer = [];
+  };
+
+  lines.forEach((line) => {
+    const unorderedMatch = line.match(/^\s*([-*])\s+(.+)/);
+    const orderedMatch = line.match(/^\s*\d+\.\s+(.+)/);
+    const headingMatch = line.match(/^(#{1,6})\s+(.+)/);
+    const quoteMatch = line.match(/^\s*>\s+(.*)/);
+    const trimmed = line.trim();
+
+    if (!trimmed) {
+      flushParagraph();
+      closeLists();
+      return;
+    }
+
+    if (unorderedMatch) {
+      flushParagraph();
+      if (!inUnorderedList) {
+        closeLists();
+        html.push("<ul>");
+        inUnorderedList = true;
+      }
+      html.push(`<li>${renderInlineMarkdown(unorderedMatch[2])}</li>`);
+      return;
+    }
+
+    if (orderedMatch) {
+      flushParagraph();
+      if (!inOrderedList) {
+        closeLists();
+        html.push("<ol>");
+        inOrderedList = true;
+      }
+      html.push(`<li>${renderInlineMarkdown(orderedMatch[1])}</li>`);
+      return;
+    }
+
+    closeLists();
+
+    if (headingMatch) {
+      flushParagraph();
+      const level = headingMatch[1].length;
+      html.push(`<h${level}>${renderInlineMarkdown(headingMatch[2])}</h${level}>`);
+      return;
+    }
+
+    if (quoteMatch) {
+      flushParagraph();
+      html.push(`<blockquote>${renderInlineMarkdown(quoteMatch[1])}</blockquote>`);
+      return;
+    }
+
+    paragraphBuffer.push(line);
+  });
+
+  flushParagraph();
+  closeLists();
+
+  return html.join("");
+}
+
+function renderInlineMarkdown(text) {
+  if (!text) return "";
+  let escaped = escapeHtml(text);
+
+  const codeReplacements = [];
+  escaped = escaped.replace(/`([^`]+)`/g, (_, code) => {
+    const placeholder = `__CODE_BLOCK_${codeReplacements.length}__`;
+    codeReplacements.push(`<code>${code}</code>`);
+    return placeholder;
+  });
+
+  escaped = escaped.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (match, alt, url) => {
+    const safeUrl = sanitizeUrl(url);
+    if (!safeUrl) return alt;
+    const safeAlt = escapeHtml(alt);
+    return `<img src="${safeUrl}" alt="${safeAlt}" loading="lazy" />`;
+  });
+
+  escaped = escaped.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (match, label, url) => {
+    const safeUrl = sanitizeUrl(url);
+    const safeLabel = renderInlineMarkdown(label);
+    if (!safeUrl) return safeLabel;
+    return `<a href="${safeUrl}" target="_blank" rel="noopener noreferrer">${safeLabel}</a>`;
+  });
+
+  escaped = escaped.replace(/\*\*([^*\n]+)\*\*/g, "<strong>$1</strong>");
+  escaped = escaped.replace(/__([^_\n]+)__/g, "<strong>$1</strong>");
+
+  escaped = escaped.replace(/(\s|^)\*(?!\s)([^*\n]+?)\*(?=\s|$)/g, "$1<em>$2</em>");
+  escaped = escaped.replace(/(\s|^)_(?!\s)([^_\n]+?)_(?=\s|$)/g, "$1<em>$2</em>");
+
+  escaped = escaped.replace(/~~([^~\n]+)~~/g, "<del>$1</del>");
+
+  escaped = escaped.replace(/\r?\n/g, "<br>");
+
+  codeReplacements.forEach((codeHtml, index) => {
+    const placeholder = `__CODE_BLOCK_${index}__`;
+    escaped = escaped.replace(placeholder, codeHtml);
+  });
+
+  return escaped;
+}
+
+function sanitizeUrl(rawUrl) {
+  if (!rawUrl) return null;
+  const url = rawUrl.trim();
+  if (!url) return null;
+  if (url.startsWith("#")) return url;
+  if (url.startsWith("/") || url.startsWith("./") || url.startsWith("../")) return url;
+  if (MARKDOWN_SAFE_PROTOCOLS.test(url)) return url;
+  return null;
+}
+
+async function buildZipForProject(project) {
+  if (typeof JSZip === "undefined") {
+    throw new Error("JSZip not available");
+  }
+  const zip = new JSZip();
+  const assets = zip.folder("assets");
+  const projectClone = deepClone(normalizeProject(project));
+
+  // Map attachments to files in assets and strip dataUrl in exported structures
+  for (const ch of projectClone.challenges) {
+    ch.descriptionAttachments = await Promise.all((ch.descriptionAttachments || []).map(async (att) => {
+      if (!att) return null;
+      if (att.dataUrl) {
+        const { base64, extension } = dataUrlToBase64(att.dataUrl, att.mimeType);
+        const safe = sanitizeFilename(att.name || `file${extension}`);
+        const filename = uniqueAssetName(safe, zip);
+        assets.file(filename, base64, { base64: true });
+        return { id: att.id || generateId(), name: att.name || safe, mimeType: att.mimeType || "application/octet-stream", path: `assets/${filename}` };
+      }
+      if (att.path) {
+        return { id: att.id || generateId(), name: att.name || "file", mimeType: att.mimeType || "application/octet-stream", path: att.path };
+      }
+      if (att.id) {
+        const rec = await idbGetAttachment(att.id).catch(() => null);
+        if (rec && rec.blob) {
+          const safe = sanitizeFilename(att.name || 'file');
+          const filename = uniqueAssetName(safe, zip);
+          assets.file(filename, rec.blob);
+          return { id: att.id, name: att.name || safe, mimeType: att.mimeType || rec.blob.type || "application/octet-stream", path: `assets/${filename}` };
+        }
+      }
+      return null;
+    })).then(list => list.filter(Boolean));
+
+    ch.hintAttachments = await Promise.all((ch.hintAttachments || []).map(async (att) => {
+      if (!att) return null;
+      if (att.dataUrl) {
+        const { base64, extension } = dataUrlToBase64(att.dataUrl, att.mimeType);
+        const safe = sanitizeFilename(att.name || `file${extension}`);
+        const filename = uniqueAssetName(safe, zip);
+        assets.file(filename, base64, { base64: true });
+        return { id: att.id || generateId(), name: att.name || safe, mimeType: att.mimeType || "application/octet-stream", path: `assets/${filename}` };
+      }
+      if (att.path) {
+        return { id: att.id || generateId(), name: att.name || "file", mimeType: att.mimeType || "application/octet-stream", path: att.path };
+      }
+      if (att.id) {
+        const rec = await idbGetAttachment(att.id).catch(() => null);
+        if (rec && rec.blob) {
+          const safe = sanitizeFilename(att.name || 'file');
+          const filename = uniqueAssetName(safe, zip);
+          assets.file(filename, rec.blob);
+          return { id: att.id, name: att.name || safe, mimeType: att.mimeType || rec.blob.type || "application/octet-stream", path: `assets/${filename}` };
+        }
+      }
+      return null;
+    })).then(list => list.filter(Boolean));
+  }
+
+  // Build standalone HTML referencing assets paths
+  const html = buildStandaloneHtml(projectClone);
+  zip.file("index.html", html);
+
+  // Manifest JSON (without dataUrl)
+  const manifest = deepClone(projectClone);
+  manifest.challenges.forEach((ch) => {
+    (ch.descriptionAttachments || []).forEach((a) => { if (a) delete a.dataUrl; });
+    (ch.hintAttachments || []).forEach((a) => { if (a) delete a.dataUrl; });
+  });
+  zip.file("project.json", JSON.stringify(manifest, null, 2));
+
+  const blob = await zip.generateAsync({ type: "blob" }, (metadata) => {
+    if (isCancelled()) {
+      throw new Error('CANCELLED');
+    }
+    try { updateProgress(metadata.percent || 0); } catch {}
+  });
+  const filename = `${slugify(projectClone.title || "gincana")}.zip`;
+  return { filename, blob };
+}
+
+function sanitizeFilename(name) {
+  const noPath = name.replace(/[\\/]+/g, "-");
+  return noPath.replace(/[^a-zA-Z0-9._-]+/g, "-");
+}
+
+function dataUrlToBase64(dataUrl, mimeTypeFallback = "") {
+  const match = /^data:([^;]*);base64,(.*)$/i.exec(dataUrl || "");
+  const mime = (match && match[1]) || mimeTypeFallback || "application/octet-stream";
+  const base64 = (match && match[2]) || "";
+  const ext = mimeToExt(mime);
+  return { base64, mimeType: mime, extension: ext };
+}
+
+function mimeToExt(mime) {
+  if (!mime) return "";
+  const map = {
+    "image/png": ".png",
+    "image/jpeg": ".jpg",
+    "image/gif": ".gif",
+    "image/webp": ".webp",
+    "application/pdf": ".pdf",
+    "text/plain": ".txt",
+    "application/zip": ".zip",
+  };
+  return map[mime] || "";
+}
+
+function uniqueAssetName(filename, zip) {
+  let base = filename;
+  let idx = 1;
+  const has = (name) => zip.file(`assets/${name}`) != null;
+  while (has(base)) {
+    const dot = base.lastIndexOf(".");
+    if (dot > 0) {
+      base = base.slice(0, dot) + `-${idx}` + base.slice(dot);
+    } else {
+      base = base + `-${idx}`;
+    }
+    idx += 1;
+  }
+  return base;
+}
+
+async function importProjectFromZip(file) {
+  if (typeof JSZip === "undefined") {
+    throw new Error("JSZip not available");
+  }
+  showProgress(t('ui.progress.import'));
+  const zip = await JSZip.loadAsync(file);
+  const manifestFile = zip.file("project.json");
+  if (!manifestFile) throw new Error("Manifest not found in ZIP");
+  const raw = await manifestFile.async("string");
+  const data = JSON.parse(raw);
+  validateProject(data);
+  const normalized = normalizeProject(data);
+  // Guardar adjuntos en IndexedDB y limpiar referencias a path/dataUrl
+  let attCount = 0;
+  normalized.challenges.forEach((c) => {
+    attCount += (c.descriptionAttachments?.length || 0) + (c.hintAttachments?.length || 0);
+  });
+  let done = 0;
+  for (const ch of normalized.challenges) {
+    ch.descriptionAttachments = await Promise.all((ch.descriptionAttachments || []).map(async (att) => {
+      if (!att) return null;
+      if (att.path) {
+        const asset = zip.file(att.path.replace(/^\/*/, ""));
+        if (asset) {
+          if (isCancelled()) throw new Error('CANCELLED');
+          const blob = await asset.async('blob');
+          const ensured = await idbEnsureAttachment({ id: att.id || generateId(), name: att.name || 'file', mimeType: att.mimeType || blob.type || 'application/octet-stream', blob });
+          done += 1; updateProgress((done / Math.max(attCount, 1)) * 100, `(${done}/${attCount}) ${ensured.name}`);
+          return { id: ensured.id, name: ensured.name, mimeType: ensured.mimeType };
+        }
+      }
+      if (att.dataUrl) {
+        if (isCancelled()) throw new Error('CANCELLED');
+        const blob = dataUrlToBlob(att.dataUrl);
+        if (blob) {
+          const ensured = await idbEnsureAttachment({ id: att.id || generateId(), name: att.name || 'file', mimeType: att.mimeType || blob.type || 'application/octet-stream', blob });
+          done += 1; updateProgress((done / Math.max(attCount, 1)) * 100, `(${done}/${attCount}) ${ensured.name}`);
+          return { id: ensured.id, name: ensured.name, mimeType: ensured.mimeType };
+        }
+      }
+      return safeAttachment(att);
+    })).then(list => list.filter(Boolean));
+
+    ch.hintAttachments = await Promise.all((ch.hintAttachments || []).map(async (att) => {
+      if (!att) return null;
+      if (att.path) {
+        const asset = zip.file(att.path.replace(/^\/*/, ""));
+        if (asset) {
+          if (isCancelled()) throw new Error('CANCELLED');
+          const blob = await asset.async('blob');
+          const ensured = await idbEnsureAttachment({ id: att.id || generateId(), name: att.name || 'file', mimeType: att.mimeType || blob.type || 'application/octet-stream', blob });
+          done += 1; updateProgress((done / Math.max(attCount, 1)) * 100, `(${done}/${attCount}) ${ensured.name}`);
+          return { id: ensured.id, name: ensured.name, mimeType: ensured.mimeType };
+        }
+      }
+      if (att.dataUrl) {
+        if (isCancelled()) throw new Error('CANCELLED');
+        const blob = dataUrlToBlob(att.dataUrl);
+        if (blob) {
+          const ensured = await idbEnsureAttachment({ id: att.id || generateId(), name: att.name || 'file', mimeType: att.mimeType || blob.type || 'application/octet-stream', blob });
+          done += 1; updateProgress((done / Math.max(attCount, 1)) * 100, `(${done}/${attCount}) ${ensured.name}`);
+          return { id: ensured.id, name: ensured.name, mimeType: ensured.mimeType };
+        }
+      }
+      return safeAttachment(att);
+    })).then(list => list.filter(Boolean));
+  }
+  const existing = projects.find((p) => p.id === normalized.id);
+  const project = existing ? { ...normalized, id: generateId() } : normalized;
+  project.createdAt = project.createdAt ?? new Date().toISOString();
+  project.updatedAt = new Date().toISOString();
+  projects.push(project);
+  activeProjectId = project.id;
+  persistProjects();
+  renderSelectors();
+  renderProjectForm();
+  applyTranslations();
+  hideProgress();
+  return project;
 }

@@ -491,6 +491,45 @@ label input {
   line-height: 1.6;
 }
 
+/* Estilos básicos para contenido Markdown en la vista del jugador */
+#player-story ul,
+#challenge-description ul,
+#challenge-hint-text ul,
+#challenge-feedback ul,
+#reward-message ul {
+  margin: 0.5rem 0 0.5rem 1.25rem;
+}
+
+#player-story ol,
+#challenge-description ol,
+#challenge-hint-text ol,
+#challenge-feedback ol,
+#reward-message ol {
+  margin: 0.5rem 0 0.5rem 1.25rem;
+}
+
+#player-story blockquote,
+#challenge-description blockquote,
+#challenge-hint-text blockquote,
+#challenge-feedback blockquote,
+#reward-message blockquote {
+  margin: 0.5rem 0;
+  padding-left: 0.9rem;
+  border-left: 3px solid rgba(37, 99, 235, 0.35);
+  color: var(--text-muted);
+}
+
+#player-story code,
+#challenge-description code,
+#challenge-hint-text code,
+#challenge-feedback code,
+#reward-message code {
+  background: rgba(15, 23, 42, 0.06);
+  padding: 0.1rem 0.35rem;
+  border-radius: 0.35rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
 .challenge-view,
 .reward-view {
   display: grid;
@@ -521,7 +560,55 @@ label input {
   margin: 0;
   font-style: italic;
   color: var(--text-muted);
-  white-space: pre-wrap;
+  /* Renderizamos HTML (Markdown), por lo que no forzamos pre-wrap */
+  white-space: normal;
+}
+
+/* Lista de adjuntos */
+.attachment-list {
+  list-style: none;
+  padding: 0;
+  margin: 0.25rem 0 0.5rem;
+  display: grid;
+  gap: 0.35rem;
+}
+.attachment-list li {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.6rem;
+  background: rgba(37, 99, 235, 0.06);
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  border-radius: 0.6rem;
+  padding: 0.5rem 0.6rem;
+}
+.attachment-list a {
+  word-break: break-all;
+  color: var(--accent);
+}
+.attachment-list .preview {
+  display: block;
+  max-width: min(380px, 100%);
+  height: auto;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+.attachment-list video,
+.attachment-list audio {
+  width: min(420px, 100%);
+}
+.attachment-item {
+  flex-direction: column;
+}
+.attachment-list button.remove-attachment {
+  background: rgba(220, 38, 38, 0.12);
+  color: var(--danger);
+  box-shadow: none;
+  border: 1px solid rgba(220, 38, 38, 0.25);
+  padding: 0.25rem 0.5rem;
+}
+.attachment-list button.remove-attachment:hover {
+  background: rgba(220, 38, 38, 0.18);
 }
 
 .hidden {
@@ -548,6 +635,86 @@ label input {
 .toast.error {
   background: var(--danger);
   box-shadow: 0 20px 35px rgba(239, 68, 68, 0.25);
+}
+
+/* Progreso */
+.progress-overlay {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(15, 23, 42, 0.35);
+  backdrop-filter: blur(2px);
+  z-index: 60;
+}
+.progress-card {
+  width: min(420px, 92vw);
+}
+.progress-bar-outer {
+  width: 100%;
+  height: 12px;
+  border-radius: 999px;
+  background: rgba(37, 99, 235, 0.15);
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  overflow: hidden;
+}
+.progress-bar-inner {
+  height: 100%;
+  background: var(--accent-gradient);
+  border-radius: 999px;
+  transition: width 0.2s ease;
+}
+.progress-text {
+  margin: 0.35rem 0 0;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+.progress-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Modal genérico */
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+}
+.modal.hidden { display: none !important; }
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(2px);
+}
+.modal-dialog {
+  position: relative;
+  z-index: 1;
+  width: min(800px, 92vw);
+  margin: 8vh auto;
+}
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+.modal-content {
+  display: grid;
+  gap: 0.5rem;
+}
+.modal-content ul { margin: 0.5rem 0 0.5rem 1.25rem; }
+.modal-content ol { margin: 0.5rem 0 0.5rem 1.25rem; }
+.modal-content blockquote {
+  margin: 0.5rem 0;
+  padding-left: 0.9rem;
+  border-left: 3px solid rgba(37, 99, 235, 0.35);
+  color: var(--text-muted);
+}
+.modal-content code {
+  background: rgba(15, 23, 42, 0.06);
+  padding: 0.1rem 0.35rem;
+  border-radius: 0.35rem;
 }
 
 @media (max-width: 720px) {

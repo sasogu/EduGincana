@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2563eb;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#7c3aed;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Fondo circular -->
+  <circle cx="50" cy="50" r="48" fill="url(#grad)"/>
+  
+  <!-- Icono de búsqueda/lupa (representa la gimcana/búsqueda del tesoro) -->
+  <circle cx="38" cy="38" r="16" fill="none" stroke="white" stroke-width="5"/>
+  <line x1="50" y1="50" x2="68" y2="68" stroke="white" stroke-width="5" stroke-linecap="round"/>
+  
+  <!-- Estrella pequeña (premio/gamificación) -->
+  <path d="M 75 25 L 77 31 L 83 31 L 78 35 L 80 41 L 75 37 L 70 41 L 72 35 L 67 31 L 73 31 Z" fill="#fbbf24"/>
+</svg>

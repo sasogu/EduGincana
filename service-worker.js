@@ -1,4 +1,4 @@
-const VERSION = "v1.0.2";
+const VERSION = "v1.0.7";
 const CACHE_NAME = `edugincana-${VERSION}`;
 const ORIGIN = self.location.origin;
 const ASSET_PATHS = [

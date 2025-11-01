@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#2563eb" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <link rel="apple-touch-icon" href="icons/icon-192.png" />
     <link rel="manifest" href="manifest.webmanifest" />
     <link rel="stylesheet" href="styles.css" />
@@ -37,6 +38,9 @@
             <option value="en" data-i18n="language.option.en">English</option>
           </select>
         </div>
+        <button type="button" id="markdown-help-open" class="secondary" data-i18n="editor.markdownHelp.button">
+          Ajuda Markdown
+        </button>
       </div>
     </header>
 
@@ -98,17 +102,17 @@
                 required
               ></textarea>
             </label>
+            <p class="markdown-hint" data-i18n="editor.markdownHint">
+              Pots emprar Markdown (negreta, llistes, enllaços...).
+            </p>
           </div>
 
           <div class="card">
             <div class="card-header">
               <h3 data-i18n="creator.challenges.title">Reptes</h3>
               <div class="button-stack">
-                <button type="button" id="export-project" data-i18n="creator.challenges.exportJson">
-                  Exporta JSON
-                </button>
-                <button type="button" id="export-html" data-i18n="creator.challenges.exportHtml">
-                  Exporta HTML
+                <button type="button" id="export-zip" data-i18n="creator.challenges.exportZip">
+                  Exporta ZIP
                 </button>
                 <button type="button" id="duplicate-project" data-i18n="creator.challenges.duplicate">
                   Duplica
@@ -169,6 +173,9 @@
                   placeholder="Ajuda breu que es mostrarà en demanar-la."
                 ></textarea>
               </label>
+              <p class="markdown-hint" data-i18n="editor.markdownHint">
+                Pots emprar Markdown (negreta, llistes, enllaços...).
+              </p>
               <button type="button" id="add-challenge" data-i18n="creator.challenges.new.button">
                 Afegeix repte
               </button>
@@ -179,14 +186,12 @@
         <section class="card">
           <h3 data-i18n="creator.import.title">Importa gimcana</h3>
           <p data-i18n="creator.import.description">
-            Si una altra persona et comparteix un JSON, enganxa'l ací per afegir-lo a la teua col·lecció.
+            Selecciona un fitxer ZIP per afegir-lo a la teua col·lecció.
           </p>
-          <textarea
-            id="import-area"
-            rows="4"
-            data-i18n-placeholder="creator.import.placeholder"
-            placeholder='{"id":"...","title":"..."}'
-          ></textarea>
+          <label>
+            <span data-i18n="creator.import.file.label">Fitxer ZIP</span>
+            <input type="file" id="import-file" accept=".zip,application/zip" />
+          </label>
           <button type="button" id="import-project" data-i18n="creator.import.button">Importa</button>
         </section>
       </section>
@@ -221,6 +226,7 @@
           <section id="challenge-view" class="challenge-view hidden">
             <h4 id="challenge-title"></h4>
             <p id="challenge-description"></p>
+            <ul id="challenge-description-attachments" class="attachment-list"></ul>
             <form id="challenge-form" autocomplete="off">
               <label class="sr-only" for="challenge-answer" data-i18n="player.challenge.answer.label">
                 Resposta
@@ -245,6 +251,7 @@
                 Demana pista
               </button>
               <p id="challenge-hint-text" class="hint-text" role="status"></p>
+              <ul id="challenge-hint-attachments" class="attachment-list"></ul>
             </div>
             <p id="challenge-feedback" role="status"></p>
           </section>
@@ -263,6 +270,7 @@
           <summary>
             <span class="challenge-name"></span>
             <div class="challenge-controls">
+              <button type="button" data-action="toggle" title="Plegar / desplegar">▾</button>
               <button type="button" data-action="move-up" title="Subir">▲</button>
               <button type="button" data-action="move-down" title="Bajar">▼</button>
               <button type="button" data-action="delete" title="Eliminar">✕</button>
@@ -301,6 +309,25 @@
                 placeholder="Ajuda breu que es mostrarà en demanar-la."
               ></textarea>
             </label>
+            <p class="markdown-hint" data-i18n="editor.markdownHint">
+              Pots emprar Markdown (negreta, llistes, enllaços...).
+            </p>
+            <fieldset>
+              <legend data-i18n="creator.challenges.attach.desc">Adjunts per a la descripció</legend>
+              <label>
+                <span data-i18n="creator.challenges.attach.add">Afig fitxers</span>
+                <input type="file" data-attach="description" multiple />
+              </label>
+              <ul class="attachment-list" data-attach-list="description"></ul>
+            </fieldset>
+            <fieldset>
+              <legend data-i18n="creator.challenges.attach.hint">Adjunts per a la pista</legend>
+              <label>
+                <span data-i18n="creator.challenges.attach.add">Afig fitxers</span>
+                <input type="file" data-attach="hint" multiple />
+              </label>
+              <ul class="attachment-list" data-attach-list="hint"></ul>
+            </fieldset>
           </div>
         </details>
       </li>
@@ -308,6 +335,35 @@
 
     <div class="toast hidden" role="status" aria-live="polite"></div>
 
+    <!-- Overlay de progreso -->
+    <div id="progress-overlay" class="progress-overlay hidden" aria-live="polite" aria-busy="true">
+      <div class="progress-card card">
+        <h3 id="progress-title" data-i18n="ui.progress.title">Procesando…</h3>
+        <div class="progress-bar-outer">
+          <div id="progress-bar" class="progress-bar-inner" style="width:0%"></div>
+        </div>
+        <p id="progress-text" class="progress-text">0%</p>
+        <div class="progress-actions">
+          <button type="button" id="progress-cancel" class="secondary" data-i18n="ui.progress.cancel">Cancelar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Ayuda Markdown -->
+    <div id="markdown-help" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="markdown-help-title">
+      <div class="modal-backdrop" data-action="close"></div>
+      <div class="modal-dialog card" role="document">
+        <div class="modal-header">
+          <h3 id="markdown-help-title" data-i18n="editor.markdownHelp.title">Ajuda de Markdown</h3>
+          <button type="button" id="markdown-help-close" class="secondary" aria-label="Tancar">✕</button>
+        </div>
+        <div class="modal-content" data-i18n="editor.markdownHelp.content">
+          <!-- Contenido traducible -->
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
     <script src="app.js" type="module"></script>
   </body>
 </html>
