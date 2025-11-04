@@ -53,6 +53,15 @@ const translations = {
     "creator.challenges.new.hint.label": "Pista (opcional)",
     "creator.challenges.new.hint.placeholder": "Ajuda breu que es mostrarà en demanar-la.",
     "creator.challenges.new.button": "Afegeix repte",
+    "creator.challenges.conditionalAnswers": "Respostes condicionals (opcional)",
+    "creator.challenges.conditionalAnswers.hint": "Defineix múltiples respostes per crear itineraris diferents",
+    "creator.challenges.addCondition": "Afegeix condició",
+    "creator.challenges.condition.answer": "Resposta",
+    "creator.challenges.condition.nextChallenge": "Següent repte",
+    "creator.challenges.condition.remove": "Elimina",
+    "creator.challenges.condition.defaultNext": "→ Següent en ordre",
+    "creator.challenges.condition.jumpTo": "→ Salta al repte:",
+    "creator.challenges.condition.finish": "→ Finalitza gimcana",
     "creator.import.title": "Importa gimcana",
     "creator.import.description":
       "Selecciona un fitxer ZIP per afegir-lo a la teua col·lecció.",
@@ -167,6 +176,15 @@ const translations = {
     "creator.challenges.new.hint.label": "Pista (opcional)",
     "creator.challenges.new.hint.placeholder": "Ayuda breve que se mostrará al pedirla.",
     "creator.challenges.new.button": "Añadir reto",
+    "creator.challenges.conditionalAnswers": "Respuestas condicionales (opcional)",
+    "creator.challenges.conditionalAnswers.hint": "Define múltiples respuestas para crear itinerarios diferentes",
+    "creator.challenges.addCondition": "Añadir condición",
+    "creator.challenges.condition.answer": "Respuesta",
+    "creator.challenges.condition.nextChallenge": "Siguiente reto",
+    "creator.challenges.condition.remove": "Eliminar",
+    "creator.challenges.condition.defaultNext": "→ Siguiente en orden",
+    "creator.challenges.condition.jumpTo": "→ Saltar al reto:",
+    "creator.challenges.condition.finish": "→ Finalizar gincana",
     "creator.import.title": "Importar gincana",
     "creator.import.description":
       "Selecciona un archivo ZIP para añadirlo a tu colección.",
@@ -282,6 +300,15 @@ const translations = {
     "creator.challenges.new.hint.label": "Hint (optional)",
     "creator.challenges.new.hint.placeholder": "Short hint shown when requested.",
     "creator.challenges.new.button": "Add challenge",
+    "creator.challenges.conditionalAnswers": "Conditional answers (optional)",
+    "creator.challenges.conditionalAnswers.hint": "Define multiple answers to create different paths",
+    "creator.challenges.addCondition": "Add condition",
+    "creator.challenges.condition.answer": "Answer",
+    "creator.challenges.condition.nextChallenge": "Next challenge",
+    "creator.challenges.condition.remove": "Remove",
+    "creator.challenges.condition.defaultNext": "→ Next in order",
+    "creator.challenges.condition.jumpTo": "→ Jump to challenge:",
+    "creator.challenges.condition.finish": "→ Finish scavenger hunt",
     "creator.import.title": "Import scavenger hunt",
     "creator.import.description":
       "Select a ZIP file to add it to your collection.",
@@ -947,6 +974,25 @@ function importProjectFromRaw(raw) {
       showToast(t("toast.challenge.requireFields"), { error: true });
       return;
     }
+    
+    // Recoger las respuestas condicionales si existen
+    const conditionalAnswers = [];
+    const conditionContainer = document.getElementById('conditional-answers-container');
+    if (conditionContainer) {
+      const conditions = conditionContainer.querySelectorAll('.condition-item');
+      conditions.forEach(condItem => {
+        const answerInput = condItem.querySelector('.condition-answer');
+        const nextSelect = condItem.querySelector('.condition-next');
+        if (answerInput && nextSelect && answerInput.value.trim()) {
+          conditionalAnswers.push({
+            answer: answerInput.value.trim(),
+            nextChallengeId: nextSelect.value || null,
+            successMessage: "",
+          });
+        }
+      });
+    }
+    
     project.challenges.push({
       id: generateId(),
       title,
@@ -957,6 +1003,7 @@ function importProjectFromRaw(raw) {
       collapsed: false,
       descriptionAttachments: [],
       hintAttachments: [],
+      conditionalAnswers,
     });
     project.updatedAt = new Date().toISOString();
     persistProjects();
@@ -966,9 +1013,202 @@ function importProjectFromRaw(raw) {
     elements.newChallengeAnswer.value = "";
     elements.newChallengeSuccess.value = "";
     elements.newChallengeHint.value = "";
+    if (conditionContainer) {
+      conditionContainer.innerHTML = "";
+    }
     const displayTitle = title || t("creator.challenge.untitled");
     showToast(t("toast.challenge.added", { title: displayTitle }));
   });
+  
+  // Manejador para añadir condiciones
+  const addConditionBtn = document.getElementById('add-condition-btn');
+  if (addConditionBtn) {
+    addConditionBtn.addEventListener('click', () => {
+      addConditionalAnswer();
+    });
+  }
+}
+
+function addConditionalAnswer(answer = '', nextChallengeId = null) {
+  const container = document.getElementById('conditional-answers-container');
+  if (!container) return;
+  
+  const project = getActiveProject();
+  const conditionDiv = document.createElement('div');
+  conditionDiv.className = 'condition-item';
+  
+  const answerInput = document.createElement('input');
+  answerInput.type = 'text';
+  answerInput.className = 'condition-answer';
+  answerInput.placeholder = t('creator.challenges.condition.answer');
+  answerInput.value = answer;
+  
+  const nextSelect = document.createElement('select');
+  nextSelect.className = 'condition-next';
+  
+  // Opción por defecto: siguiente en orden
+  const defaultOption = document.createElement('option');
+  defaultOption.value = '';
+  defaultOption.textContent = t('creator.challenges.condition.defaultNext');
+  nextSelect.appendChild(defaultOption);
+  
+  // Opción: finalizar gimcana
+  const finishOption = document.createElement('option');
+  finishOption.value = 'finish';
+  finishOption.textContent = t('creator.challenges.condition.finish');
+  nextSelect.appendChild(finishOption);
+  
+  // Opciones: saltar a un reto específico
+  if (project && project.challenges) {
+    project.challenges.forEach((ch, idx) => {
+      const option = document.createElement('option');
+      option.value = ch.id;
+      option.textContent = `${t('creator.challenges.condition.jumpTo')} ${idx + 1}. ${ch.title || t('creator.challenge.untitled')}`;
+      nextSelect.appendChild(option);
+    });
+  }
+  
+  if (nextChallengeId) {
+    nextSelect.value = nextChallengeId;
+  }
+  
+  const removeBtn = document.createElement('button');
+  removeBtn.type = 'button';
+  removeBtn.className = 'secondary small';
+  removeBtn.textContent = t('creator.challenges.condition.remove');
+  removeBtn.addEventListener('click', () => {
+    conditionDiv.remove();
+  });
+  
+  const answerLabel = document.createElement('label');
+  const answerSpan = document.createElement('span');
+  answerSpan.textContent = t('creator.challenges.condition.answer');
+  answerLabel.appendChild(answerSpan);
+  answerLabel.appendChild(answerInput);
+  
+  const nextLabel = document.createElement('label');
+  const nextSpan = document.createElement('span');
+  nextSpan.textContent = t('creator.challenges.condition.nextChallenge');
+  nextLabel.appendChild(nextSpan);
+  nextLabel.appendChild(nextSelect);
+  
+  conditionDiv.appendChild(answerLabel);
+  conditionDiv.appendChild(nextLabel);
+  conditionDiv.appendChild(removeBtn);
+  container.appendChild(conditionDiv);
+}
+
+function renderConditionalAnswers(container, challenge, project, challengeIndex) {
+  if (!container) return;
+  container.innerHTML = '';
+  
+  const conditions = challenge.conditionalAnswers || [];
+  conditions.forEach((condition) => {
+    addConditionalAnswerToChallenge(container, project, challengeIndex, condition.answer, condition.nextChallengeId, { sync: false });
+  });
+}
+
+function addConditionalAnswerToChallenge(container, project, challengeIndex, answer = '', nextChallengeId = null, { sync = true } = {}) {
+  if (!container) return;
+  
+  const conditionDiv = document.createElement('div');
+  conditionDiv.className = 'condition-item';
+  
+  const answerInput = document.createElement('input');
+  answerInput.type = 'text';
+  answerInput.className = 'condition-answer';
+  answerInput.placeholder = t('creator.challenges.condition.answer');
+  answerInput.value = answer;
+  
+  const nextSelect = document.createElement('select');
+  nextSelect.className = 'condition-next';
+  
+  const defaultOption = document.createElement('option');
+  defaultOption.value = '';
+  defaultOption.textContent = t('creator.challenges.condition.defaultNext');
+  nextSelect.appendChild(defaultOption);
+  
+  const finishOption = document.createElement('option');
+  finishOption.value = 'finish';
+  finishOption.textContent = t('creator.challenges.condition.finish');
+  nextSelect.appendChild(finishOption);
+  
+  if (project && project.challenges) {
+    project.challenges.forEach((ch, idx) => {
+      if (idx !== challengeIndex) {
+        const option = document.createElement('option');
+        option.value = ch.id;
+        option.textContent = `${t('creator.challenges.condition.jumpTo')} ${idx + 1}. ${ch.title || t('creator.challenge.untitled')}`;
+        nextSelect.appendChild(option);
+      }
+    });
+  }
+  
+  if (nextChallengeId) {
+    nextSelect.value = nextChallengeId;
+  }
+  
+  const syncFn = () => {
+    syncConditionalAnswers(project, challengeIndex, container);
+  };
+  answerInput.addEventListener('input', syncFn);
+  nextSelect.addEventListener('change', syncFn);
+  
+  const removeBtn = document.createElement('button');
+  removeBtn.type = 'button';
+  removeBtn.className = 'secondary small';
+  removeBtn.textContent = t('creator.challenges.condition.remove');
+  removeBtn.addEventListener('click', () => {
+    conditionDiv.remove();
+    syncFn();
+  });
+  
+  const answerLabel = document.createElement('label');
+  const answerSpan = document.createElement('span');
+  answerSpan.textContent = t('creator.challenges.condition.answer');
+  answerLabel.appendChild(answerSpan);
+  answerLabel.appendChild(answerInput);
+  
+  const nextLabel = document.createElement('label');
+  const nextSpan = document.createElement('span');
+  nextSpan.textContent = t('creator.challenges.condition.nextChallenge');
+  nextLabel.appendChild(nextSpan);
+  nextLabel.appendChild(nextSelect);
+  
+  conditionDiv.appendChild(answerLabel);
+  conditionDiv.appendChild(nextLabel);
+  conditionDiv.appendChild(removeBtn);
+  container.appendChild(conditionDiv);
+  
+  if (sync) {
+    syncFn();
+  }
+}
+
+function syncConditionalAnswers(project, challengeIndex, container) {
+  if (!project) return;
+  const challenge = project.challenges[challengeIndex];
+  if (!challenge) return;
+  if (!container) return;
+
+  const items = container.querySelectorAll('.condition-item');
+  const newConditions = [];
+  items.forEach((item) => {
+    const answerInput = item.querySelector('.condition-answer');
+    const nextSelect = item.querySelector('.condition-next');
+    if (!answerInput) return;
+    const value = answerInput.value.trim();
+    if (!value) return;
+    newConditions.push({
+      answer: value,
+      nextChallengeId: nextSelect?.value || null,
+      successMessage: '',
+    });
+  });
+
+  challenge.conditionalAnswers = newConditions;
+  project.updatedAt = new Date().toISOString();
+  persistProjects();
 }
 
 async function bumpRefsForProject(project) {
@@ -1046,17 +1286,57 @@ function bindPlayerEvents() {
       showFeedback(t("player.feedback.noAnswer"), true);
       return;
     }
-    if (userInput !== expected) {
+    
+    // Verificar respuestas condicionales primero
+    let nextChallengeId = null;
+    let customSuccessMessage = null;
+    let answerMatched = false;
+    
+    if (challenge.conditionalAnswers && challenge.conditionalAnswers.length > 0) {
+      for (const condition of challenge.conditionalAnswers) {
+        if (normalizeAnswer(condition.answer) === userInput) {
+          answerMatched = true;
+          nextChallengeId = condition.nextChallengeId;
+          customSuccessMessage = condition.successMessage;
+          break;
+        }
+      }
+    }
+    
+    // Si no coincide con ninguna respuesta condicional, verificar la respuesta principal
+    if (!answerMatched && userInput === expected) {
+      answerMatched = true;
+      // nextChallengeId permanece null, lo que significa seguir al siguiente
+    }
+    
+    if (!answerMatched) {
       showFeedback(t("player.feedback.incorrect"), true);
       return;
     }
-
-    const nextIndex = currentIndex + 1;
-    if (challenge.successMessage) {
-      showFeedback(challenge.successMessage, false);
+    
+    // Determinar el siguiente índice
+    let nextIndex;
+    if (nextChallengeId === "finish") {
+      // Ir directamente al final
+      nextIndex = project.challenges.length;
+    } else if (nextChallengeId) {
+      // Buscar el índice del reto de destino
+      const targetIndex = project.challenges.findIndex(ch => ch.id === nextChallengeId);
+      if (targetIndex !== -1) {
+        nextIndex = targetIndex;
+      } else {
+        // Si no se encuentra, seguir al siguiente
+        nextIndex = currentIndex + 1;
+      }
     } else {
-      showFeedback(t("player.feedback.correct"), false);
+      // Respuesta normal: seguir al siguiente
+      nextIndex = currentIndex + 1;
     }
+    
+    // Mostrar mensaje de éxito
+    const successMsg = customSuccessMessage || challenge.successMessage || t("player.feedback.correct");
+    showFeedback(successMsg, false);
+    
     const updatedProgress = { currentIndex: nextIndex };
     saveProgress(project.id, updatedProgress);
     elements.challengeAnswer.value = "";
@@ -1192,6 +1472,19 @@ function renderChallenges(project) {
     answerInput.addEventListener("input", handleChallengeField(project, index, "answer"));
     successInput.addEventListener("input", handleChallengeField(project, index, "successMessage"));
     hintInput.addEventListener("input", handleChallengeField(project, index, "hint"));
+
+    // Renderizar respuestas condicionales
+    const conditionalContainer = node.querySelector('.challenge-conditional-container');
+    const addConditionBtn = node.querySelector('.add-condition-btn');
+    if (conditionalContainer && addConditionBtn) {
+      // Renderizar condiciones existentes
+      renderConditionalAnswers(conditionalContainer, challenge, project, index);
+      
+      // Manejador para añadir nueva condición
+      addConditionBtn.addEventListener('click', () => {
+        addConditionalAnswerToChallenge(conditionalContainer, project, index, '', null, { sync: false });
+      });
+    }
 
     if (descAttachInput) {
       descAttachInput.addEventListener("change", async (e) => {
@@ -1835,6 +2128,13 @@ function normalizeProject(project) {
         : [],
       hintAttachments: Array.isArray(challenge.hintAttachments)
         ? challenge.hintAttachments.map(safeAttachment).filter(Boolean)
+        : [],
+      conditionalAnswers: Array.isArray(challenge.conditionalAnswers)
+        ? challenge.conditionalAnswers.map((cond) => ({
+            answer: typeof cond.answer === "string" ? cond.answer : "",
+            nextChallengeId: typeof cond.nextChallengeId === "string" ? cond.nextChallengeId : null,
+            successMessage: typeof cond.successMessage === "string" ? cond.successMessage : "",
+          })).filter(c => c.answer)
         : [],
     };
     return normalizedChallenge;

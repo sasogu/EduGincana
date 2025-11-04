@@ -173,6 +173,22 @@
                   placeholder="Ajuda breu que es mostrarà en demanar-la."
                 ></textarea>
               </label>
+              
+              <div class="conditional-answers-section">
+                <details>
+                  <summary data-i18n="creator.challenges.conditionalAnswers">
+                    Respostes condicionals (opcional)
+                  </summary>
+                  <p class="hint" data-i18n="creator.challenges.conditionalAnswers.hint">
+                    Defineix múltiples respostes per crear itineraris diferents
+                  </p>
+                  <div id="conditional-answers-container"></div>
+                  <button type="button" id="add-condition-btn" class="secondary" data-i18n="creator.challenges.addCondition">
+                    Afegeix condició
+                  </button>
+                </details>
+              </div>
+              
               <p class="markdown-hint" data-i18n="editor.markdownHint">
                 Pots emprar Markdown (negreta, llistes, enllaços...).
               </p>
@@ -312,6 +328,18 @@
             <p class="markdown-hint" data-i18n="editor.markdownHint">
               Pots emprar Markdown (negreta, llistes, enllaços...).
             </p>
+            <div class="conditional-answers-section">
+              <details>
+                <summary data-i18n="creator.challenges.conditionalAnswers">Respuestas condicionales (opcional)</summary>
+                <p class="hint" data-i18n="creator.challenges.conditionalAnswers.hint">
+                  Define múltiples respuestas para crear itinerarios diferentes
+                </p>
+                <div class="challenge-conditional-container"></div>
+                <button type="button" class="secondary add-condition-btn" data-i18n="creator.challenges.addCondition">
+                  Añadir condición
+                </button>
+              </details>
+            </div>
             <fieldset>
               <legend data-i18n="creator.challenges.attach.desc">Adjunts per a la descripció</legend>
               <label>
