@@ -173,6 +173,43 @@
                   placeholder="Ajuda breu que es mostrarà en demanar-la."
                 ></textarea>
               </label>
+              <!-- INICIO: Campos H5P -->
+              <fieldset class="h5p-section">
+                <legend data-i18n="creator.challenges.h5p.title">Activitat H5P (opcional)</legend>
+                <label>
+                  <span data-i18n="creator.challenges.h5p.url.label">URL de l'activitat H5P</span>
+                  <input
+                    type="url"
+                    id="new-ch-h5p-url"
+                    data-i18n-placeholder="creator.challenges.h5p.url.placeholder"
+                    placeholder="https://h5p.org/h5p/embed/1234"
+                  />
+                </label>
+                <label>
+                  <span data-i18n="creator.challenges.h5p.height.label">Altura del visor (opcional)</span>
+                  <input
+                    type="text"
+                    id="new-ch-h5p-height"
+                    data-i18n-placeholder="creator.challenges.h5p.height.placeholder"
+                    placeholder="500px"
+                    value="500px"
+                  />
+                </label>
+                <p class="hint" data-i18n="creator.challenges.h5p.hint">
+                  Pega la URL del iframe de qualsevol plataforma H5P. El codi de resposta ha d'aparèixer 
+                  a la pantalla final de l'activitat o ser proporcionat pel professor.
+                </p>
+                <details>
+                  <summary data-i18n="creator.challenges.h5p.help.title">Com obtenir la URL del H5P?</summary>
+                  <ul data-i18n-html="creator.challenges.h5p.help.content">
+                    <li><strong>H5P.org:</strong> Clica "Embed" → Copia la URL del src del iframe</li>
+                    <li><strong>Moodle:</strong> Afegeix l'activitat → Compartir → Obtenir codi iframe</li>
+                    <li><strong>WordPress:</strong> Plugin H5P → Obtenir codi d'incrustació</li>
+                    <li><strong>Lumi:</strong> Exporta i publica → Usa la URL pública</li>
+                  </ul>
+                </details>
+              </fieldset>
+              <!-- FIN: Campos H5P -->
               
               <div class="conditional-answers-section">
                 <details>
@@ -325,6 +362,22 @@
                 placeholder="Ajuda breu que es mostrarà en demanar-la."
               ></textarea>
             </label>
+            <!-- INICIO: Campos H5P edición -->
+            <fieldset class="h5p-section">
+              <legend data-i18n="creator.challenges.h5p.title">Activitat H5P (opcional)</legend>
+              <label>
+                <span data-i18n="creator.challenges.h5p.url.label">URL de l'activitat H5P</span>
+                <input type="url" data-field="h5pUrl" />
+              </label>
+              <label>
+                <span data-i18n="creator.challenges.h5p.height.label">Altura del visor (opcional)</span>
+                <input type="text" data-field="h5pHeight" placeholder="500px" />
+              </label>
+              <p class="hint" data-i18n="creator.challenges.h5p.hint">
+                Pega la URL del iframe de qualsevol plataforma H5P.
+              </p>
+            </fieldset>
+            <!-- FIN: Campos H5P edición -->
             <p class="markdown-hint" data-i18n="editor.markdownHint">
               Pots emprar Markdown (negreta, llistes, enllaços...).
             </p>

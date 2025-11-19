@@ -5,6 +5,16 @@ const DEFAULT_LANGUAGE = "ca";
 
 const translations = {
   ca: {
+    // H5P
+    "creator.challenges.h5p.title": "Activitat H5P (opcional)",
+    "creator.challenges.h5p.url.label": "URL de l'activitat H5P",
+    "creator.challenges.h5p.url.placeholder": "https://h5p.org/h5p/embed/1234",
+    "creator.challenges.h5p.height.label": "Altura del visor (opcional)",
+    "creator.challenges.h5p.height.placeholder": "500px",
+    "creator.challenges.h5p.hint": "Pega la URL del iframe de qualsevol plataforma H5P. El codi de resposta ha d'aparèixer a la pantalla final de l'activitat o ser proporcionat pel professor.",
+    "creator.challenges.h5p.help.title": "Com obtenir la URL del H5P?",
+    "creator.challenges.h5p.help.content": "<li><strong>H5P.org:</strong> Clica 'Embed' → Copia la URL del src del iframe</li><li><strong>Moodle:</strong> Afegeix l'activitat → Compartir → Obtenir codi iframe</li><li><strong>WordPress:</strong> Plugin H5P → Obtenir codi d'incrustació</li><li><strong>Lumi:</strong> Exporta i publica → Usa la URL pública</li>",
+    "player.h5p.instruction": "📝 Completa l'activitat interactiva i copia el codi que apareix al final",
     "language.label": "Idioma",
     "language.option.ca": "Valencià",
     "language.option.es": "Castellà",
@@ -127,6 +137,16 @@ const translations = {
     "ui.fullscreen.exitHint": "Toca per eixir"
   },
   es: {
+  // H5P
+  "creator.challenges.h5p.title": "Actividad H5P (opcional)",
+  "creator.challenges.h5p.url.label": "URL de la actividad H5P",
+  "creator.challenges.h5p.url.placeholder": "https://h5p.org/h5p/embed/1234",
+  "creator.challenges.h5p.height.label": "Altura del visor (opcional)",
+  "creator.challenges.h5p.height.placeholder": "500px",
+  "creator.challenges.h5p.hint": "Pega la URL del iframe de cualquier plataforma H5P. El código de respuesta debe aparecer en la pantalla final de la actividad o ser proporcionado por el profesor.",
+  "creator.challenges.h5p.help.title": "¿Cómo obtener la URL del H5P?",
+  "creator.challenges.h5p.help.content": "<li><strong>H5P.org:</strong> Haz clic en 'Embed' → Copia la URL del src del iframe</li><li><strong>Moodle:</strong> Añade la actividad → Compartir → Obtener código iframe</li><li><strong>WordPress:</strong> Plugin H5P → Obtener código de incrustación</li><li><strong>Lumi:</strong> Exporta y publica → Usa la URL pública</li>",
+  "player.h5p.instruction": "📝 Completa la actividad interactiva y copia el código que aparece al final",
     "language.label": "Idioma",
     "language.option.ca": "Valenciano",
     "language.option.es": "Español",
@@ -250,6 +270,16 @@ const translations = {
     "ui.fullscreen.exitHint": "Toca para salir"
   },
   en: {
+  // H5P
+  "creator.challenges.h5p.title": "H5P Activity (optional)",
+  "creator.challenges.h5p.url.label": "H5P activity URL",
+  "creator.challenges.h5p.url.placeholder": "https://h5p.org/h5p/embed/1234",
+  "creator.challenges.h5p.height.label": "Viewer height (optional)",
+  "creator.challenges.h5p.height.placeholder": "500px",
+  "creator.challenges.h5p.hint": "Paste the iframe URL from any H5P platform. The answer code should appear at the end of the activity or be provided by the teacher.",
+  "creator.challenges.h5p.help.title": "How to get the H5P URL?",
+  "creator.challenges.h5p.help.content": "<li><strong>H5P.org:</strong> Click 'Embed' → Copy the iframe src URL</li><li><strong>Moodle:</strong> Add activity → Share → Get iframe code</li><li><strong>WordPress:</strong> H5P Plugin → Get embed code</li><li><strong>Lumi:</strong> Export and publish → Use public URL</li>",
+  "player.h5p.instruction": "📝 Complete the interactive activity and copy the code that appears at the end",
     "language.label": "Language",
     "language.option.ca": "Valencian",
     "language.option.es": "Spanish",
@@ -970,11 +1000,13 @@ function importProjectFromRaw(raw) {
     const answer = elements.newChallengeAnswer.value.trim();
     const successMessage = elements.newChallengeSuccess.value.trim();
     const hint = elements.newChallengeHint.value.trim();
+    // NUEVOS CAMPOS H5P
+    const h5pUrl = document.getElementById('new-ch-h5p-url')?.value.trim() || "";
+    const h5pHeight = document.getElementById('new-ch-h5p-height')?.value.trim() || "500px";
     if (!title || !answer) {
       showToast(t("toast.challenge.requireFields"), { error: true });
       return;
     }
-    
     // Recoger las respuestas condicionales si existen
     const conditionalAnswers = [];
     const conditionContainer = document.getElementById('conditional-answers-container');
@@ -992,7 +1024,6 @@ function importProjectFromRaw(raw) {
         }
       });
     }
-    
     project.challenges.push({
       id: generateId(),
       title,
@@ -1000,6 +1031,8 @@ function importProjectFromRaw(raw) {
       answer,
       successMessage,
       hint,
+      h5pUrl,           // NUEVO
+      h5pHeight,        // NUEVO
       collapsed: false,
       descriptionAttachments: [],
       hintAttachments: [],
@@ -1013,6 +1046,11 @@ function importProjectFromRaw(raw) {
     elements.newChallengeAnswer.value = "";
     elements.newChallengeSuccess.value = "";
     elements.newChallengeHint.value = "";
+    // Limpiar campos H5P
+    const h5pUrlInput = document.getElementById('new-ch-h5p-url');
+    if (h5pUrlInput) h5pUrlInput.value = "";
+    const h5pHeightInput = document.getElementById('new-ch-h5p-height');
+    if (h5pHeightInput) h5pHeightInput.value = "500px";
     if (conditionContainer) {
       conditionContainer.innerHTML = "";
     }
@@ -1467,6 +1505,18 @@ function renderChallenges(project) {
     successInput.value = challenge.successMessage || "";
     hintInput.value = challenge.hint || "";
 
+    // H5P: campos edición
+    const h5pUrlInput = node.querySelector('input[data-field="h5pUrl"]');
+    const h5pHeightInput = node.querySelector('input[data-field="h5pHeight"]');
+    if (h5pUrlInput) {
+      h5pUrlInput.value = challenge.h5pUrl || "";
+      h5pUrlInput.addEventListener("input", handleChallengeField(project, index, "h5pUrl"));
+    }
+    if (h5pHeightInput) {
+      h5pHeightInput.value = challenge.h5pHeight || "500px";
+      h5pHeightInput.addEventListener("input", handleChallengeField(project, index, "h5pHeight"));
+    }
+
     titleInput.addEventListener("input", handleChallengeField(project, index, "title"));
     descriptionInput.addEventListener("input", handleChallengeField(project, index, "description"));
     answerInput.addEventListener("input", handleChallengeField(project, index, "answer"));
@@ -1798,6 +1848,45 @@ function renderCurrentChallenge(project, progress) {
     elements.challengeDescription,
     challenge.description || t("player.challenge.defaultDescription")
   );
+  // Renderizar H5P si existe
+  if (challenge.h5pUrl && typeof challenge.h5pUrl === "string" && challenge.h5pUrl.trim()) {
+    console.log("[H5P] Intentando renderizar H5P:", challenge.h5pUrl, "altura:", challenge.h5pHeight);
+    let h5pContainer = document.getElementById("h5p-embed-container");
+    if (!h5pContainer) {
+      h5pContainer = document.createElement("div");
+      h5pContainer.id = "h5p-embed-container";
+      h5pContainer.className = "h5p-embed-container";
+      elements.challengeDescription.parentElement.insertBefore(h5pContainer, elements.challengeDescription.nextSibling);
+    } else {
+      h5pContainer.innerHTML = "";
+    }
+    const iframe = document.createElement("iframe");
+    iframe.src = challenge.h5pUrl;
+    iframe.style.width = "100%";
+    iframe.style.height = challenge.h5pHeight || "500px";
+    iframe.style.border = "none";
+    iframe.style.borderRadius = "0.5rem";
+    iframe.setAttribute("allowfullscreen", "allowfullscreen");
+    iframe.setAttribute("allow", "geolocation *; microphone *; camera *; midi *; encrypted-media *");
+    iframe.setAttribute("title", challenge.title || "H5P Activity");
+    iframe.onload = function() {
+      console.log("[H5P] iframe cargado correctamente");
+    };
+    iframe.onerror = function(e) {
+      console.error("[H5P] Error al cargar el iframe:", e);
+    };
+    h5pContainer.appendChild(iframe);
+    const instructions = document.createElement("div");
+    instructions.className = "h5p-instructions";
+    instructions.innerHTML = `<p><strong>${t('player.h5p.instruction')}</strong></p>`;
+    h5pContainer.appendChild(instructions);
+  } else {
+    // Si no hay H5P, eliminar contenedor si existe
+    const h5pContainer = document.getElementById("h5p-embed-container");
+    if (h5pContainer && h5pContainer.parentElement) {
+      h5pContainer.parentElement.removeChild(h5pContainer);
+    }
+  }
   renderAttachmentLinks(elements.challengeDescAttachments, challenge.descriptionAttachments);
   elements.challengeFeedback.textContent = "";
   elements.challengeFeedback.classList.remove("error");
@@ -2122,6 +2211,9 @@ function normalizeProject(project) {
           : challenge.hint == null
           ? ""
           : String(challenge.hint),
+      // H5P
+      h5pUrl: typeof challenge.h5pUrl === "string" ? challenge.h5pUrl : "",
+      h5pHeight: typeof challenge.h5pHeight === "string" ? challenge.h5pHeight : "500px",
       collapsed: Boolean(challenge.collapsed),
       descriptionAttachments: Array.isArray(challenge.descriptionAttachments)
         ? challenge.descriptionAttachments.map(safeAttachment).filter(Boolean)
